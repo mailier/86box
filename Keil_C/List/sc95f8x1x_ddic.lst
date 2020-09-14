@@ -1,0 +1,182 @@
+C51 COMPILER V9.56.0.0   SC95F8X1X_DDIC                                                    09/07/2020 22:21:34 PAGE 1   
+
+
+C51 COMPILER V9.56.0.0, COMPILATION OF MODULE SC95F8X1X_DDIC
+OBJECT MODULE PLACED IN ..\Output\sc95f8x1x_ddic.obj
+COMPILER INVOKED BY: E:\keil5\C51\BIN\C51.EXE ..\FWLib\SC95F8x1x_Lib\src\sc95f8x1x_ddic.c OMF2 OPTIMIZE(8,SPEED) BROWSE 
+                    -INCDIR(..\FWLib\SC95F8x1x_Lib\inc;..\User) DEBUG PRINT(..\List\sc95f8x1x_ddic.lst) OBJECT(..\Output\sc95f8x1x_ddic.obj)
+
+line level    source
+
+   1          //************************************************************
+   2          //  Copyright (c) 深圳市赛元微电子有限公司
+   3          //      文件名称        : sc95f8x1x_ddic.c
+   4          //      作者            : 
+   5          //      模块功能        : DDIC固件库函数C文件
+   6          //      局部函数列表:
+   7          //  最后更正日期: 2020/4/20
+   8          //      版本            : V1.0 
+   9          //  说明        ：  
+  10          //*************************************************************
+  11          
+  12          #include "sc95f8x1x_ddic.h"
+  13          
+  14          uint8_t xdata LCDRAM[30] _at_ 0x1000;
+  15          
+  16          /**************************************************
+  17          *函数名称：void DDIC_DeInit(void)
+  18          *函数功能：DDIC相关寄存器复位至缺省值
+  19          *入口参数：void
+  20          *出口参数：void
+  21          **************************************************/
+  22          void DDIC_DeInit(void)
+  23          {
+  24   1              DDRCON = 0X00;
+  25   1              P0VO = 0X00;
+  26   1              P1VO = 0X00;
+  27   1              P2VO = 0X00;
+  28   1              P3VO = 0X00;
+  29   1              OTCON &= 0XF0;
+  30   1      }
+  31          
+  32          /**************************************************
+  33          *函数名称：void DDIC_Init(uint8_t P0OutputPin)
+  34          *函数功能：DDIC初始化配置函数
+  35          *入口参数：DDIC_DutyCylce       LCD/LED显示占空比控制
+  36                             P0OutputPin          设置P0口引脚为LCD电压输出口     
+  37                             P1OutputPin          设置P1口引脚为LCD电压输出口
+  38                             P2OutputPin          设置P2口引脚为LCD电压输出口
+  39                             P3OutputPin          设置P3口引脚为LCD电压输出口
+  40          *出口参数：void
+  41          **************************************************/
+  42          void DDIC_Init(DDIC_DutyCycle_TypeDef DDIC_DutyCylce, uint8_t P0OutputPin, uint8_t P1OutputPin, uint8_t P2
+             -OutputPin, uint8_t P3OutputPin)
+  43          {
+  44   1              DDRCON = DDRCON & 0XCF | DDIC_DutyCylce;
+  45   1              P0VO = P0OutputPin;
+  46   1              P1VO = P1OutputPin;
+  47   1              P2VO = P2OutputPin;
+  48   1              P3VO = P3OutputPin;                     
+  49   1      }
+  50          
+  51          /**************************************************
+  52          *函数名称：void DDIC_LEDConfig(void)
+  53          *函数功能：LED配置函数
+C51 COMPILER V9.56.0.0   SC95F8X1X_DDIC                                                    09/07/2020 22:21:34 PAGE 2   
+
+  54          *入口参数：void
+  55          *出口参数：void
+  56          **************************************************/
+  57          void DDIC_LEDConfig(void)
+  58          {
+  59   1              DDRCON |= 0X40;
+  60   1      }
+  61          
+  62          /**************************************************
+  63          *函数名称：void DDIC_LCDConfig(DDIC_ResSel_Typedef DDIC_ResSel)
+  64          *函数功能：LCD配置函数
+  65          *入口参数：LCDVoltage           LCD电压调节
+  66                             DDIC_ResSel          LCD电压输出口电阻选择
+  67                             DDIC_BiasVoltage     LCD显示驱动偏置电压设置
+  68          *出口参数：void
+  69          **************************************************/
+  70          void DDIC_LCDConfig(uint8_t LCDVoltage, DDIC_ResSel_Typedef DDIC_ResSel, DDIC_BiasVoltage_Typedef DDIC_Bia
+             -sVoltage)
+  71          {
+  72   1              DDRCON = DDRCON & 0XB0 | LCDVoltage;
+  73   1              OTCON = OTCON & 0XF2 | DDIC_ResSel | DDIC_BiasVoltage;                  
+  74   1      }
+  75          /**************************************************
+  76          *函数名称：void DDIC_DMOD_Selcet(DDIC_DMOD_TypeDef DDIC_DMOD)
+  77          *函数功能：显示驱动模式选择函数
+  78          *入口参数：DDIC_DMOD            选择显示模式
+  79          *出口参数：void
+  80          **************************************************/
+  81          void DDIC_DMOD_Selcet(DDIC_DMOD_TypeDef DDIC_DMOD)
+  82          {
+  83   1              if(DDIC_DMOD == DMOD_LED)
+  84   1              {
+  85   2                      DDRCON |= 0X40;
+  86   2              }
+  87   1              else
+  88   1              {
+  89   2                      DDRCON &= 0XBF;
+  90   2              }
+  91   1      }
+  92          /*****************************************************
+  93          *函数名称：void DDIC_OutputPinOfDutycycleD4(DDIC_OutputPin_TypeDef DDIC_OutputPin)
+  94          *函数功能：1/4占空比时segment与common复用管脚选择
+  95          *入口参数：DDIC_OutputPin       输出管脚选择
+  96          *出口参数：void
+  97          *****************************************************/
+  98          void DDIC_OutputPinOfDutycycleD4(DDIC_OutputPin_TypeDef DDIC_OutputPin)
+  99          {
+ 100   1              if(DDIC_OutputPin == SEG4_27COM0_3)
+ 101   1              {
+ 102   2                      OTCON |= 0X02;
+ 103   2              }
+ 104   1              else
+ 105   1              {
+ 106   2                      OTCON &= 0Xfd;
+ 107   2              }
+ 108   1      }
+ 109          
+ 110          /*****************************************************
+ 111          *函数名称：void DDIC_Cmd(FunctionalState NewState)
+ 112          *函数功能：显示驱动功能开关函数
+ 113          *入口参数：FunctionalState NewState     功能启动/关闭选择
+ 114          *出口参数：void
+C51 COMPILER V9.56.0.0   SC95F8X1X_DDIC                                                    09/07/2020 22:21:34 PAGE 3   
+
+ 115          *****************************************************/
+ 116          void DDIC_Cmd(FunctionalState NewState)
+ 117          {
+ 118   1              if(NewState == DISABLE)
+ 119   1              {
+ 120   2                      DDRCON &= 0X7F;
+ 121   2              }
+ 122   1              else
+ 123   1              {
+ 124   2                      DDRCON |= 0x80;
+ 125   2              }       
+ 126   1      }
+ 127          /*****************************************************
+ 128          *函数名称：void DDIC_Control(DDIC_Control_SEG_TypeDef DDIC_Seg,DDIC_Control_COM_TypeDef DDIC_Com,DDIC_Cont
+             -rol_Status DDIC_Contr)
+ 129          *函数功能：控制输入的SEG和COM脚对应LCD/LED的亮灭
+ 130          *入口参数：DDIC_Control_SEG_TypeDef DDIC_Seg 选择控制的SEG口
+ 131                             DDIC_Control_COM_TypeDef DDIC_Com 选择控制的COM口
+ 132                             DDIC_Control_Status DDIC_Contr       控制状态
+ 133          *出口参数：void
+ 134          *****************************************************/
+ 135          void DDIC_Control(DDIC_Control_SEG_TypeDef DDIC_Seg,DDIC_Control_COM_TypeDef DDIC_Com,DDIC_Control_Status 
+             -DDIC_Contr)
+ 136          {
+ 137   1              if(DDIC_Contr)
+ 138   1              {
+ 139   2                       LCDRAM[DDIC_Seg] |= DDIC_Com;
+ 140   2              }
+ 141   1              else
+ 142   1              {
+ 143   2                       LCDRAM[DDIC_Seg] &= (~DDIC_Com);
+ 144   2              }
+ 145   1      }
+ 146          /******************* (C) COPYRIGHT 2020 SinOne Microelectronics *****END OF FILE****/
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    122    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       5
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+   EDATA SIZE       =   ----    ----
+   HDATA SIZE       =   ----    ----
+   XDATA CONST SIZE =   ----    ----
+   FAR CONST SIZE   =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

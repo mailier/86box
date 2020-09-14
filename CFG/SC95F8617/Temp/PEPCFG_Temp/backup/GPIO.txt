@@ -1,0 +1,7 @@
+[PinNumber]5[/PinNumber][UpperIndex]0[/UpperIndex][Iindex]1[/Iindex]
+[PinNumber]8[/PinNumber][UpperIndex]0[/UpperIndex][Iindex]2[/Iindex]
+[PinNumber]9[/PinNumber][UpperIndex]0[/UpperIndex][Iindex]2[/Iindex]
+[PinNumber]15[/PinNumber][UpperIndex]0[/UpperIndex][Iindex]2[/Iindex]
+[PinNumber]20[/PinNumber][UpperIndex]0[/UpperIndex][Iindex]1[/Iindex]
+[PinNumber]21[/PinNumber][UpperIndex]0[/UpperIndex][Iindex]1[/Iindex]
+[PinNumber]22[/PinNumber][UpperIndex]0[/UpperIndex][Iindex]1[/Iindex]

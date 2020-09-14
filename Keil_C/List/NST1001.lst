@@ -1,0 +1,146 @@
+C51 COMPILER V9.56.0.0   NST1001                                                           09/07/2020 22:21:34 PAGE 1   
+
+
+C51 COMPILER V9.56.0.0, COMPILATION OF MODULE NST1001
+OBJECT MODULE PLACED IN ..\Output\NST1001.obj
+COMPILER INVOKED BY: E:\keil5\C51\BIN\C51.EXE ..\User\NST1001.c OMF2 OPTIMIZE(8,SPEED) BROWSE INCDIR(..\FWLib\SC95F8x1x_
+                    -Lib\inc;..\User) DEBUG PRINT(..\List\NST1001.lst) OBJECT(..\Output\NST1001.obj)
+
+line level    source
+
+   1          //************************************************************
+   2          //  Copyright (c) 深圳市赛元微电子有限公司
+   3          //      文件名称        : NST1001.c
+   4          //      作者: 
+   5          //      模块功能        : 温度采集
+   6          //      局部函数列表:
+   7          //  最后更正日期: 2019/7/10
+   8          //      版本            : V1.0 
+   9          //  说明        ：  
+  10          //*************************************************************
+  11          #include "NST1001.h"
+  12          #include "SC_it.h"
+  13          #include "interface.h"
+  14          
+  15          bit int1_first_flag = 0;                //第一次采集温度标志位
+  16          
+  17          bit temp_judge_flag = 0;                //判断温度有效标志位
+  18          
+  19          bit temp_start_flag = 0;                //采集温度开始标志位
+  20          bit temp_over_flag = 0;                 //采集温度结束标志位
+  21          
+  22          unsigned char temp_collect_timer2 = 0;          //采集温度开始时间      
+  23          unsigned char temp_over_timer2 = 0;             //采集温度结束时间
+  24          unsigned int temp_num = 0;                                      //采集温度脉冲量
+  25          unsigned int N_Temper = 0;                                      //温度结果摄氏度
+  26          
+  27          //unsigned int moment_num = 0;
+  28          
+  29          /* NST1001温度读取函数 */
+  30          void GetNST1001Temp()
+  31          {       
+  32   1      
+  33   1              static unsigned int moment_num = 0;
+  34   1      
+  35   1              
+  36   1              if(int1_first_flag == 1)                //第一次采集温度标志位
+  37   1              {
+  38   2                      temp_over_flag = 0;                     //脉冲结束标志位
+  39   2                      temp_collect_timer2     = 0;    //清除温度采集时间
+  40   2                      temp_over_timer2 = 0;           //清除脉冲结束时间
+  41   2      //              temp_num = 0;                           //清空脉冲数
+  42   2                      
+  43   2                      NST1001_IO = 1;                         //上拉打开NST1001
+  44   2                      NST1001_DQ = 1;                     //上拉计数IO口准备计数
+  45   2      
+  46   2                      int1_first_flag = 0;
+  47   2              }
+  48   1      
+  49   1                      if(temp_collect_timer2<15)              
+  50   1                      {       
+  51   2                              INT0_ITConfig(ENABLE,1);        //打开中断使能
+  52   2                              temp_num = 0;                           //清空脉冲量
+  53   2                      }
+  54   1                      if(temp_collect_timer2>20)              //开始温度脉冲读取
+C51 COMPILER V9.56.0.0   NST1001                                                           09/07/2020 22:21:34 PAGE 2   
+
+  55   1                      {
+  56   2                              
+  57   2                              if(temp_num != moment_num)
+  58   2                              {
+  59   3                                      
+  60   3                                      moment_num = temp_num;
+  61   3                                      temp_over_timer2=0;
+  62   3                              }
+  63   2                              else                                            //
+  64   2                              {
+  65   3                                      temp_over_flag = 1;             //脉冲结束标志位
+  66   3                                      
+  67   3                              }       
+  68   2      
+  69   2                 }
+  70   1              
+  71   1              if(temp_over_timer2>15)                         //温度脉冲读取结束
+  72   1                      
+  73   1              {       
+  74   2                      
+  75   2                      if(temp_num > 0)                                //判断脉冲量有效
+  76   2                      {       
+  77   3                              N_Temper = ((long int)temp_num*625 - 500625)/1000;
+  78   3                              
+  79   3                              
+  80   3                              temp_judge_flag = 0;
+  81   3                      }
+  82   2                      else
+  83   2                              temp_judge_flag = 1;            //脉冲量为零则为无效，判断位置一
+  84   2                              
+  85   2                      if(temp_num < 1281)                             //小于30℃
+  86   2              {
+  87   3                       
+  88   3                              N_Temper = N_Temper + (N_Temper - 30)*0.005;
+  89   3              }
+  90   2                      if((temp_num > 1281) && (temp_num < 2401))  //30℃<温度<100℃
+  91   2              {
+  92   3                              N_Temper = N_Temper;
+  93   3              }
+  94   2                      if(temp_num > 2401)                             //大于100℃
+  95   2              {
+  96   3                              N_Temper = N_Temper + (100 - N_Temper)*0.012;
+  97   3              }
+  98   2                      
+  99   2      
+ 100   2                      INT0_ITConfig(DISABLE,LOW);     //关闭中断      
+ 101   2              
+ 102   2                      NST1001_IO = 0;                         //下拉关闭NST1001
+ 103   2                      NST1001_DQ = 0;                     //下拉计数IO口
+ 104   2                      
+ 105   2                      temp_over_flag = 0;                     //脉冲结束标志位
+ 106   2                      temp_start_flag = 0;            //脉冲开始标志位
+ 107   2              
+ 108   2                      temp_collect_timer2 = 0;        //清除脉冲采集时间
+ 109   2                      temp_over_timer2 = 0;           //清除脉冲间隔定时器时间
+ 110   2      
+ 111   2                      temp_num = 0;                           //清空脉冲数
+ 112   2              }
+ 113   1              
+ 114   1      }
+
+
+C51 COMPILER V9.56.0.0   NST1001                                                           09/07/2020 22:21:34 PAGE 3   
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    322    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      8    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      4    ----
+   EDATA SIZE       =   ----    ----
+   HDATA SIZE       =   ----    ----
+   XDATA CONST SIZE =   ----    ----
+   FAR CONST SIZE   =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

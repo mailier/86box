@@ -1,0 +1,585 @@
+C51 COMPILER V9.56.0.0   INTERFACE                                                         09/07/2020 22:21:34 PAGE 1   
+
+
+C51 COMPILER V9.56.0.0, COMPILATION OF MODULE INTERFACE
+OBJECT MODULE PLACED IN ..\Output\interface.obj
+COMPILER INVOKED BY: E:\keil5\C51\BIN\C51.EXE ..\User\interface.c OMF2 OPTIMIZE(8,SPEED) BROWSE INCDIR(..\FWLib\SC95F8x1
+                    -x_Lib\inc;..\User) DEBUG PRINT(..\List\interface.lst) OBJECT(..\Output\interface.obj)
+
+line level    source
+
+   1          //************************************************************
+   2          //  Copyright (c) 深圳市赛元微电子有限公司
+   3          //      文件名称        : interface.c
+   4          //      作者            : 
+   5          //      模块功能        : 界面交互
+   6          //      局部函数列表:
+   7          //  最后更正日期: 2019/7/10
+   8          //      版本            : V1.0 
+   9          //  说明        ：  
+  10          //*************************************************************
+  11          
+  12          #include "interface.h"
+  13          #include "SC_it.h"
+  14          #include "BM8563.h"
+  15          
+  16          
+  17          
+  18          
+  19          unsigned char code LCD_number_SEG[][7]=
+  20          {
+  21                  //对应界面数字位数；1--3位温度位，4--7位时间位
+  22                  {0},                                            //num0
+  23                  {22,21,21,22,23,23,22},         //num1  
+  24                  {19,18,18,19,20,20,19},         //num2
+  25                  {16,15,15,16,17,17,16},         //num3
+  26                  {11,10,10,11,14,14,11},         //num4
+  27                  {8,7,7,8,9,9,8},                        //num5
+  28                  {5,4,4,5,6,6,5},                        //num6
+  29                  {2,1,1,2,3,3,2},                        //num7
+  30          };
+  31          unsigned char code LCD_number_COM[][7]=
+  32          {
+  33                  //对应数字0,1,2,3,4,5,6,7,8,9
+  34                  {0x80,0x40,0x20,0x20,0x20,0x40,0x00},   //0
+  35                  {0x00,0x40,0x20,0x00,0x00,0x00,0x00},   //1
+  36                  {0x80,0x40,0x00,0x20,0x20,0x00,0x40},   //2
+  37                  {0x80,0x40,0x20,0x20,0x00,0x00,0x40},   //3
+  38                  {0x00,0x40,0x20,0x00,0x00,0x40,0x40},   //4
+  39                  {0x80,0x00,0x20,0x20,0x00,0x40,0x40},   //5
+  40                  {0x80,0x00,0x20,0x20,0x20,0x40,0x40},   //6
+  41                  {0x80,0x40,0x20,0x00,0x00,0x00,0x00},   //7
+  42                  {0x80,0x40,0x20,0x20,0x20,0x40,0x40},   //8             //用来清屏
+  43                  {0x80,0x40,0x20,0x20,0x00,0x40,0x40},   //9
+  44          };
+  45          unsigned char code LCD_bits_SEG[]=
+  46          {
+  47                  //对应界面数标A,1,2,3,4,5,6,copy,paste
+  48                  23,21,18,15,10,7,1,24,25
+  49          };
+  50          unsigned char code LCD_week_SEG[]=
+  51          {
+  52                  //对应界面星期日，一，二，三，四，五，六
+  53                  14,23,21,20,18,17,15
+  54          };
+C51 COMPILER V9.56.0.0   INTERFACE                                                         09/07/2020 22:21:34 PAGE 2   
+
+  55          
+  56          /**************************************************
+  57          *函数名称：void LCD_cleanALL(void)
+  58          *函数功能：LCD清除
+  59          *入口参数：uint8_t bits
+  60          *出口参数：void
+  61          **************************************************/
+  62          
+  63          void LCD_cleanALL(void)
+  64          {
+  65   1              LCD_clean(TEMPER);
+  66   1              LCD_clean(TIMER);
+  67   1              LCD_clean(HOTCOOL);
+  68   1              LCD_clean(WIND);
+  69   1              LCD_clean(STATE);
+  70   1              LCD_clean(MODE);
+  71   1              LCD_clean(GROUP);
+  72   1              DDIC_Control(DDIC_SEG6,DDIC_COM4,DDIC_Control_OFF);                     //S23":"
+  73   1              DDIC_Control(DDIC_SEG20,DDIC_COM4,DDIC_Control_OFF);            //风挡
+  74   1              
+  75   1      }
+  76          
+  77          /**************************************************
+  78          *函数名称：void LCD_clean(void)
+  79          *函数功能：LCD清除
+  80          *入口参数：uint8_t bits
+  81          *出口参数：void
+  82          **************************************************/
+  83          
+  84          void LCD_clean(uint8_t bits)
+  85          {
+  86   1              uint8_t select;
+  87   1              if(bits == TEMPER)
+  88   1              {
+  89   2                      
+  90   2                      DDIC_Control(DDIC_SEG3,DDIC_COM7,DDIC_Control_OFF);                     //S22"F"
+  91   2                      DDIC_Control(DDIC_SEG1,DDIC_COM7,DDIC_Control_OFF);                     //S21"C"
+  92   2                      DDIC_Control(DDIC_SEG17,DDIC_COM4,DDIC_Control_OFF);            //S20"."
+  93   2                      
+  94   2                      for(select=0;select<7;select++)
+  95   2                      {       
+  96   3                              DDIC_Control(DDIC_SEG24,DDIC_COM6,DDIC_Control_OFF);                    //S19"1"                                //温度
+  97   3                              DDIC_Control(LCD_number_SEG[1][select],LCD_number_COM[8][select],DDIC_Control_OFF);
+  98   3                              DDIC_Control(LCD_number_SEG[2][select],LCD_number_COM[8][select],DDIC_Control_OFF);
+  99   3                              DDIC_Control(LCD_number_SEG[3][select],LCD_number_COM[8][select],DDIC_Control_OFF);
+ 100   3                              
+ 101   3                      }
+ 102   2                      
+ 103   2              }       
+ 104   1              else if(bits == TIMER)
+ 105   1              {
+ 106   2                      
+ 107   2      //                      DDIC_Control(DDIC_SEG6,DDIC_COM4,DDIC_Control_OFF);                                                                             //S23":"
+ 108   2                      for(select=0;select<7;select++)
+ 109   2                      {       
+ 110   3                              DDIC_Control(LCD_number_SEG[4][select],LCD_number_COM[8][select],DDIC_Control_OFF);             //时钟
+ 111   3                              DDIC_Control(LCD_number_SEG[5][select],LCD_number_COM[8][select],DDIC_Control_OFF);             
+ 112   3                              DDIC_Control(LCD_number_SEG[6][select],LCD_number_COM[8][select],DDIC_Control_OFF);             //分钟
+ 113   3                              DDIC_Control(LCD_number_SEG[7][select],LCD_number_COM[8][select],DDIC_Control_OFF);             
+ 114   3                      
+ 115   3                              DDIC_Control(LCD_week_SEG[select],DDIC_COM7,DDIC_Control_OFF);                                                  //星期
+ 116   3                      }       
+C51 COMPILER V9.56.0.0   INTERFACE                                                         09/07/2020 22:21:34 PAGE 3   
+
+ 117   2                      
+ 118   2              }
+ 119   1              else if(bits == HOTCOOL)
+ 120   1              {
+ 121   2                      DDIC_Control(DDIC_SEG24,DDIC_COM7,DDIC_Control_OFF);
+ 122   2                      DDIC_Control(DDIC_SEG27,DDIC_COM7,DDIC_Control_OFF);
+ 123   2                      DDIC_Control(DDIC_SEG27,DDIC_COM6,DDIC_Control_OFF);
+ 124   2              }       
+ 125   1              else if(bits == WIND)
+ 126   1              {
+ 127   2                      LCD_wind(0);
+ 128   2      //              DDIC_Control(DDIC_SEG20,DDIC_COM4,DDIC_Control_OFF);            //风挡
+ 129   2                      
+ 130   2              }
+ 131   1              else if(bits == STATE)
+ 132   1              {
+ 133   2                      DDIC_Control(DDIC_SEG27,DDIC_COM5,DDIC_Control_OFF);            //S11"ST"
+ 134   2                      DDIC_Control(DDIC_SEG24,DDIC_COM5,DDIC_Control_OFF);            //S12"RT"
+ 135   2                      DDIC_Control(DDIC_SEG22,DDIC_COM4,DDIC_Control_OFF);            //S13"RH"
+ 136   2              }       
+ 137   1              else if(bits == MODE)
+ 138   1              {
+ 139   2                      DDIC_Control(DDIC_SEG24,DDIC_COM7,DDIC_Control_OFF);            //S8"日"
+ 140   2                      DDIC_Control(DDIC_SEG25,DDIC_COM7,DDIC_Control_OFF);            //S9"雪"
+ 141   2                      DDIC_Control(DDIC_SEG25,DDIC_COM6,DDIC_Control_OFF);            //S10"叶"
+ 142   2              }       
+ 143   1              else if(bits == GROUP)
+ 144   1              {
+ 145   2                      for(select=0;select<9;select++)
+ 146   2                      {       
+ 147   3                              DDIC_Control(LCD_bits_SEG[select],DDIC_COM4,DDIC_Control_OFF);
+ 148   3                      }
+ 149   2              }       
+ 150   1              
+ 151   1      }
+ 152          
+ 153          /**************************************************
+ 154          *函数名称：void LCD_group(void)
+ 155          *函数功能：LCD显示数标
+ 156          *入口参数：uint8_t bits
+ 157          *出口参数：void
+ 158          **************************************************/
+ 159          
+ 160          void LCD_group(uint8_t bits)
+ 161          {
+ 162   1      
+ 163   1              DDIC_Control(LCD_bits_SEG[bits],DDIC_COM4,DDIC_Control_ON);
+ 164   1      
+ 165   1      }       
+ 166          
+ 167          /**************************************************
+ 168          *函数名称：void LCD_week(void)
+ 169          *函数功能：LCD显示星期
+ 170          *入口参数：uint8_t week
+ 171          *出口参数：void
+ 172          **************************************************/
+ 173          
+ 174          void LCD_week(uint8_t week,bit blink)
+ 175          {
+ 176   1      
+ 177   1              DDIC_Control(LCD_week_SEG[week],DDIC_COM7,blink);
+ 178   1      
+C51 COMPILER V9.56.0.0   INTERFACE                                                         09/07/2020 22:21:34 PAGE 4   
+
+ 179   1      }
+ 180          
+ 181          /**************************************************
+ 182          *函数名称：void LCD_mode(uint8_t mode)
+ 183          *函数功能：LCD显示设备模式
+ 184          *入口参数：uint8_t mode
+ 185          *出口参数：void
+ 186          **************************************************/
+ 187          
+ 188          void LCD_mode(uint8_t mode)
+ 189          {
+ 190   1              static bit DDIC_Control1,
+ 191   1                                      DDIC_Control2,
+ 192   1                                      DDIC_Control3;
+ 193   1      
+ 194   1              switch(mode)
+ 195   1              {
+ 196   2                      case 1:                 
+ 197   2                              DDIC_Control1 = 1;
+ 198   2                              DDIC_Control2 = 0;
+ 199   2                              DDIC_Control3 = 0;
+ 200   2                      break;
+ 201   2                      case 2:                 
+ 202   2                              DDIC_Control1 = 0;
+ 203   2                              DDIC_Control2 = 1;
+ 204   2                              DDIC_Control3 = 0;
+ 205   2                      break;
+ 206   2                      case 3:                 
+ 207   2                              DDIC_Control1 = 0;
+ 208   2                              DDIC_Control2 = 0;
+ 209   2                              DDIC_Control3 = 1;
+ 210   2                      break;
+ 211   2                      default:
+ 212   2                              break;
+ 213   2              }
+ 214   1      
+ 215   1               DDIC_Control(DDIC_SEG24,DDIC_COM7,DDIC_Control1);              //S8"日"
+ 216   1               DDIC_Control(DDIC_SEG25,DDIC_COM7,DDIC_Control2);              //S9"雪"
+ 217   1               DDIC_Control(DDIC_SEG25,DDIC_COM6,DDIC_Control3);              //S10"叶"
+ 218   1      }
+ 219          
+ 220          /**************************************************
+ 221          *函数名称：void LCD_state(uint8_t state)
+ 222          *函数功能：LCD显示状态模式
+ 223          *入口参数：uint8_t state
+ 224          *出口参数：void
+ 225          **************************************************/
+ 226          
+ 227          void LCD_state(uint8_t state)
+ 228          {
+ 229   1              static bit DDIC_Control1,
+ 230   1                                      DDIC_Control2,
+ 231   1                                      DDIC_Control3;
+ 232   1              
+ 233   1              switch(state)
+ 234   1              {
+ 235   2                      case 1:                         
+ 236   2                              DDIC_Control1 = 1;
+ 237   2                              DDIC_Control2 = 0;
+ 238   2                              DDIC_Control3 = 0;
+ 239   2                      break;
+ 240   2                      
+C51 COMPILER V9.56.0.0   INTERFACE                                                         09/07/2020 22:21:34 PAGE 5   
+
+ 241   2                      case 2:                         
+ 242   2                              DDIC_Control1 = 0;
+ 243   2                              DDIC_Control2 = 1;
+ 244   2                              DDIC_Control3 = 0;
+ 245   2                      break;
+ 246   2                      
+ 247   2                      case 3:                         
+ 248   2                              DDIC_Control1 = 0;
+ 249   2                              DDIC_Control2 = 0;
+ 250   2                              DDIC_Control3 = 1;
+ 251   2                      break;
+ 252   2                      
+ 253   2                      default:
+ 254   2                              break;
+ 255   2              }
+ 256   1              DDIC_Control(DDIC_SEG25,DDIC_COM5,DDIC_Control1);               //S11"ST"
+ 257   1              DDIC_Control(DDIC_SEG24,DDIC_COM5,DDIC_Control2);               //S12"RT"
+ 258   1              DDIC_Control(DDIC_SEG22,DDIC_COM4,DDIC_Control3);               //S13"RH"
+ 259   1              
+ 260   1      
+ 261   1      }
+ 262          
+ 263          /**************************************************
+ 264          *函数名称：void LCD_wind(uint8_t DDIC_windControl)
+ 265          *函数功能：LCD显示风挡
+ 266          *入口参数：uint8_t DDIC_windControl
+ 267          *出口参数：void
+ 268          **************************************************/
+ 269          
+ 270          void LCD_wind(uint8_t DDIC_windControl)
+ 271          {
+ 272   1              static bit DDIC_Control1,
+ 273   1                                      DDIC_Control2,
+ 274   1                                      DDIC_Control3,
+ 275   1                                      DDIC_Control4;
+ 276   1      
+ 277   1      
+ 278   1              switch(DDIC_windControl)
+ 279   1              {
+ 280   2                      case 0: 
+ 281   2                              DDIC_Control1 = 0;
+ 282   2                              DDIC_Control2 = 0;
+ 283   2                              DDIC_Control3 = 0;
+ 284   2                              DDIC_Control4 = 0;      
+ 285   2                      break;
+ 286   2                                      
+ 287   2                      case 1: 
+ 288   2                              DDIC_Control1 = 1;
+ 289   2                              DDIC_Control2 = 0;
+ 290   2                              DDIC_Control3 = 0;
+ 291   2                              DDIC_Control4 = 0;      
+ 292   2                      break;
+ 293   2                      
+ 294   2                      case 2: 
+ 295   2                              DDIC_Control1 = 1;
+ 296   2                              DDIC_Control2 = 1;
+ 297   2                              DDIC_Control3 = 0;
+ 298   2                              DDIC_Control4 = 0;              
+ 299   2                      break;
+ 300   2                      
+ 301   2                      case 3: 
+ 302   2                              DDIC_Control1 = 1;
+C51 COMPILER V9.56.0.0   INTERFACE                                                         09/07/2020 22:21:34 PAGE 6   
+
+ 303   2                              DDIC_Control2 = 1;
+ 304   2                              DDIC_Control3 = 1;
+ 305   2                              DDIC_Control4 = 0;              
+ 306   2                      break;
+ 307   2                      
+ 308   2                      case 4: 
+ 309   2                              DDIC_Control1 = 1;
+ 310   2                              DDIC_Control2 = 1;
+ 311   2                              DDIC_Control3 = 1;
+ 312   2                              DDIC_Control4 = 1;              
+ 313   2                      break;
+ 314   2                      
+ 315   2                      default:
+ 316   2                              break;
+ 317   2              }
+ 318   1              DDIC_Control(DDIC_SEG19,DDIC_COM4,DDIC_Control1);               //S15"1档"
+ 319   1              DDIC_Control(DDIC_SEG16,DDIC_COM4,DDIC_Control2);               //S16"2档"
+ 320   1              DDIC_Control(DDIC_SEG14,DDIC_COM4,DDIC_Control3);               //S17"3档"
+ 321   1              DDIC_Control(DDIC_SEG11,DDIC_COM4,DDIC_Control4);               //S18"4档"
+ 322   1      
+ 323   1      
+ 324   1      }
+ 325          
+ 326          /**************************************************
+ 327          *函数名称：void LCD_power(uint8_t DDIC_powerControl)
+ 328          *函数功能：LCD显示电量
+ 329          *入口参数：uint8_t DDIC_powerControl
+ 330          *出口参数：void
+ 331          **************************************************/
+ 332          
+ 333          void LCD_power(uint8_t DDIC_powerControl)
+ 334          {
+ 335   1              
+ 336   1              bit DDIC_Control1;
+ 337   1              bit     DDIC_Control2;
+ 338   1              bit     DDIC_Control3;
+ 339   1      
+ 340   1              
+ 341   1              DDIC_Control(DDIC_SEG0,DDIC_COM4,DDIC_Control_ON);              //S36"电量"
+ 342   1              
+ 343   1              switch(DDIC_powerControl)
+ 344   1              {
+ 345   2                      case 0:
+ 346   2                              DDIC_Control1 = 0;
+ 347   2                              DDIC_Control2 = 0;
+ 348   2                              DDIC_Control3 = 0;
+ 349   2                      
+ 350   2                      break;
+ 351   2                      
+ 352   2                      case 1: 
+ 353   2                              DDIC_Control1 = 1;
+ 354   2                              DDIC_Control2 = 0;
+ 355   2                              DDIC_Control3 = 0;
+ 356   2      
+ 357   2                      break;
+ 358   2                      
+ 359   2                      case 2: 
+ 360   2                              DDIC_Control1 = 1;
+ 361   2                              DDIC_Control2 = 1;
+ 362   2                              DDIC_Control3 = 0;
+ 363   2      
+ 364   2                      break;
+C51 COMPILER V9.56.0.0   INTERFACE                                                         09/07/2020 22:21:34 PAGE 7   
+
+ 365   2                      
+ 366   2                      case 3: 
+ 367   2                              DDIC_Control1 = 1;
+ 368   2                              DDIC_Control2 = 1;
+ 369   2                              DDIC_Control3 = 1;
+ 370   2              
+ 371   2                      break;
+ 372   2                      
+ 373   2                      default:
+ 374   2                              break;
+ 375   2              }
+ 376   1      
+ 377   1              DDIC_Control(DDIC_SEG0,DDIC_COM6,DDIC_Control1);                //S34"电量1"
+ 378   1              DDIC_Control(DDIC_SEG0,DDIC_COM5,DDIC_Control2);                //S35"电量2"
+ 379   1              DDIC_Control(DDIC_SEG0,DDIC_COM7,DDIC_Control3);                //S36"电量3"
+ 380   1              
+ 381   1      }       
+ 382          
+ 383          /**************************************************
+ 384          *函数名称：void LCD_signal(uint8_t DDIC_signalControl)
+ 385          *函数功能：LCD显示信号
+ 386          *入口参数：uint8_t DDIC_signalControl
+ 387          *出口参数：void
+ 388          **************************************************/
+ 389          
+ 390          void LCD_signal(uint8_t DDIC_signalControl)
+ 391          {
+ 392   1              
+ 393   1              bit DDIC_Control1;
+ 394   1              bit     DDIC_Control2;
+ 395   1              bit     DDIC_Control3;
+ 396   1      
+ 397   1              
+ 398   1              DDIC_Control(DDIC_SEG10,DDIC_COM7,DDIC_Control_ON);             //S37"信号"
+ 399   1              
+ 400   1              switch(DDIC_signalControl)
+ 401   1              {
+ 402   2                      case 0:
+ 403   2                              DDIC_Control1 = 0;
+ 404   2                              DDIC_Control2 = 0;
+ 405   2                              DDIC_Control3 = 0;
+ 406   2                      
+ 407   2                      
+ 408   2                      break;
+ 409   2                      
+ 410   2                      case 1: 
+ 411   2                              DDIC_Control1 = 1;
+ 412   2                              DDIC_Control2 = 0;
+ 413   2                              DDIC_Control3 = 0;
+ 414   2      
+ 415   2                      break;
+ 416   2                      
+ 417   2                      case 2: 
+ 418   2                              DDIC_Control1 = 1;
+ 419   2                              DDIC_Control2 = 1;
+ 420   2                              DDIC_Control3 = 0;
+ 421   2      
+ 422   2                      break;
+ 423   2                      
+ 424   2                      case 3: 
+ 425   2                              DDIC_Control1 = 1;
+ 426   2                              DDIC_Control2 = 1;
+C51 COMPILER V9.56.0.0   INTERFACE                                                         09/07/2020 22:21:34 PAGE 8   
+
+ 427   2                              DDIC_Control3 = 1;
+ 428   2              
+ 429   2                      break;
+ 430   2                      
+ 431   2                      default:
+ 432   2                              break;
+ 433   2              }
+ 434   1      
+ 435   1              DDIC_Control(DDIC_SEG9,DDIC_COM7,DDIC_Control1);                //S38"信号1"
+ 436   1              DDIC_Control(DDIC_SEG7,DDIC_COM7,DDIC_Control2);                //S39"信号2"
+ 437   1              DDIC_Control(DDIC_SEG6,DDIC_COM7,DDIC_Control3);                //S40"信号3"
+ 438   1              
+ 439   1              
+ 440   1      }       
+ 441          
+ 442          /**************************************************
+ 443          *函数名称：void LCD_number(uint8_t bits,uint8_t num,bit blink)
+ 444          *函数功能：LCD显示数字
+ 445          *入口参数：uint8_t bits,uint8_t num
+ 446          *出口参数：void
+ 447          **************************************************/
+ 448          
+ 449          void LCD_number(uint8_t bits,uint8_t num,bit blink)
+ 450          {
+ 451   1              uint8_t select;
+ 452   1              
+ 453   1              for(select=0;select<7;select++)
+ 454   1              {       
+ 455   2                      DDIC_Control(LCD_number_SEG[bits][select],LCD_number_COM[num][select],blink);
+ 456   2              }               
+ 457   1      }
+ 458          
+ 459          /**************************************************
+ 460          *函数名称：void LCD_time(uint8_t hour,uint8_t min)
+ 461          *函数功能：LCD显示时间
+ 462          *入口参数：uint8_t hour,uint8_t min
+ 463          *出口参数：void
+ 464          **************************************************/
+ 465          
+ 466          void LCD_time(uint8_t LCD_time_hour,uint8_t LCD_time_min,uint8_t LCD_time_week,bit LCD_time_hour_flag,bit 
+             -LCD_time_min_flag,bit LCD_time_week_flag)
+ 467          {       
+ 468   1      
+ 469   1                      LCD_number(4,LCD_time_hour/10,LCD_time_hour_flag);
+ 470   1                      LCD_number(5,LCD_time_hour%10,LCD_time_hour_flag);
+ 471   1      
+ 472   1                      LCD_number(6,LCD_time_min/10,LCD_time_min_flag);
+ 473   1                      LCD_number(7,LCD_time_min%10,LCD_time_min_flag);
+ 474   1      
+ 475   1                      DDIC_Control(LCD_week_SEG[LCD_time_week],DDIC_COM7,LCD_time_week_flag);
+ 476   1              
+ 477   1      }
+ 478          
+ 479          /**************************************************
+ 480          *函数名称：void LCD_sTemperature(uint8_t DDIC_temperature)
+ 481          *函数功能：LCD显示摄氏度
+ 482          *入口参数：uint8_t DDIC_temperature
+ 483          *出口参数：void
+ 484          **************************************************/
+ 485          
+ 486          void LCD_Temper_error(void)
+ 487          {
+C51 COMPILER V9.56.0.0   INTERFACE                                                         09/07/2020 22:21:34 PAGE 9   
+
+ 488   1              DDIC_Control(DDIC_SEG21,DDIC_COM6,DDIC_Control_OFF);            //1B""
+ 489   1              DDIC_Control(DDIC_SEG21,DDIC_COM5,DDIC_Control_OFF);            //1C""
+ 490   1              DDIC_Control(DDIC_SEG19,DDIC_COM5,DDIC_Control_OFF);            //2D""
+ 491   1              DDIC_Control(DDIC_SEG16,DDIC_COM5,DDIC_Control_OFF);            //3D""
+ 492   1      }
+ 493          
+ 494          /**************************************************
+ 495          *函数名称：void LCD_sTemperature(uint8_t DDIC_temperature)
+ 496          *函数功能：LCD显示摄氏度
+ 497          *入口参数：uint8_t DDIC_temperature
+ 498          *出口参数：void
+ 499          **************************************************/
+ 500          
+ 501          void LCD_sTemperature(uint16_t DDIC_temperature)
+ 502          {
+ 503   1              
+ 504   1              if(DDIC_temperature>999)        //这是摄氏度
+ 505   1              DDIC_Control(DDIC_SEG24,DDIC_COM6,DDIC_Control_ON);             //S19"1"
+ 506   1              
+ 507   1              DDIC_Control(DDIC_SEG1,DDIC_COM7,DDIC_Control_ON);              //S21"C"
+ 508   1                      LCD_number(1,DDIC_temperature%1000/100,1);
+ 509   1                      LCD_number(2,(DDIC_temperature%100)/10,1);
+ 510   1                      LCD_number(3,DDIC_temperature%10,1);
+ 511   1              
+ 512   1              DDIC_Control(DDIC_SEG17,DDIC_COM4,DDIC_Control_ON);             //S20"."
+ 513   1              
+ 514   1      }
+ 515          
+ 516          //sTemperature = 5/9.0*(hTemperature-32);
+ 517          
+ 518          /**************************************************
+ 519          *函数名称：void LCD_hTemperature(uint8_t DDIC_temperature)
+ 520          *函数功能：LCD显示华氏度
+ 521          *入口参数：uint8_t DDIC_temperature
+ 522          *出口参数：void
+ 523          **************************************************/
+ 524          
+ 525          void LCD_hTemperature(uint16_t DDIC_temperature)
+ 526          {
+ 527   1              LCD_clean(TEMPER);
+ 528   1              if(DDIC_temperature>999)        //这是华氏度
+ 529   1              DDIC_Control(DDIC_SEG24,DDIC_COM6,DDIC_Control_ON);             //S19"1"
+ 530   1              
+ 531   1              DDIC_Control(DDIC_SEG3,DDIC_COM7,DDIC_Control_ON);              //S22"F"
+ 532   1                      LCD_number(1,DDIC_temperature%1000/100,1);
+ 533   1                      LCD_number(2,DDIC_temperature%100/10,1);
+ 534   1                      LCD_number(3,DDIC_temperature%10,1);
+ 535   1              
+ 536   1              DDIC_Control(DDIC_SEG17,DDIC_COM4,DDIC_Control_ON);             //S20"."
+ 537   1              
+ 538   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1295    ----
+   CONSTANT SIZE    =    142    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----      14
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =     10      11
+   EDATA SIZE       =   ----    ----
+C51 COMPILER V9.56.0.0   INTERFACE                                                         09/07/2020 22:21:34 PAGE 10  
+
+   HDATA SIZE       =   ----    ----
+   XDATA CONST SIZE =   ----    ----
+   FAR CONST SIZE   =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

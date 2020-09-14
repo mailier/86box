@@ -1,0 +1,39 @@
+{
+    "configurations": [
+        {
+            "name": "<86box_temperature>",
+            "includePath": [
+                "g:\\86box_temperature-8-21\\Keil_C\\FWLib\\SC95F8x1x_Lib\\inc",
+                "g:\\86box_temperature-8-21\\Keil_C\\User",
+                "g:\\86box_temperature-8-21\\Keil_C\\FWLib\\SC95F8x1x_Lib\\src",
+                "g:\\86box_temperature-8-21\\Keil_C\\Project"
+            ],
+            "defines": [
+                "__C51__",
+                "__VSCODE_C51__",
+                "reentrant=",
+                "compact=",
+                "small=",
+                "large=",
+                "data=",
+                "idata=",
+                "pdata=",
+                "bdata=",
+                "xdata=",
+                "code=",
+                "bit=char",
+                "sbit=char",
+                "sfr=char",
+                "sfr16=int",
+                "sfr32=int",
+                "interrupt=",
+                "using=",
+                "_at_=",
+                "_priority_=",
+                "_task_="
+            ],
+            "intelliSenseMode": "${default}"
+        }
+    ],
+    "version": 4
+}

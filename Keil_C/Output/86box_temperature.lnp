@@ -1,0 +1,20 @@
+"..\Output\main.obj",
+"..\Output\SC_Init.obj",
+"..\Output\SC_it.obj",
+"..\Output\EC06_key.obj",
+"..\Output\interface.obj",
+"..\Output\BM8563.obj",
+"..\Output\NST1001.obj",
+"..\Output\operation.obj",
+"..\Output\sc95f8x1x_ddic.obj",
+"..\Output\sc95f8x1x_gpio.obj",
+"..\Output\sc95f8x1x_int.obj",
+"..\Output\sc95f8x1x_option.obj",
+"..\Output\sc95f8x1x_timer2.obj",
+"..\Output\sc95f8x1x_iap.obj",
+"..\Output\STARTUP.obj" 
+TO "..\Output\86box_temperature" 
+
+PRINT("..\List\86box_temperature.map") REMOVEUNUSED 
+CLASSES (CODE(C:0X100),
+CONST(C:0X100)) 

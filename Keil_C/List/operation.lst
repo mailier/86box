@@ -1,0 +1,761 @@
+C51 COMPILER V9.56.0.0   OPERATION                                                         09/07/2020 22:21:34 PAGE 1   
+
+
+C51 COMPILER V9.56.0.0, COMPILATION OF MODULE OPERATION
+OBJECT MODULE PLACED IN ..\Output\operation.obj
+COMPILER INVOKED BY: E:\keil5\C51\BIN\C51.EXE ..\User\operation.c OMF2 OPTIMIZE(8,SPEED) BROWSE INCDIR(..\FWLib\SC95F8x1
+                    -x_Lib\inc;..\User) DEBUG PRINT(..\List\operation.lst) OBJECT(..\Output\operation.obj)
+
+line level    source
+
+   1          //************************************************************
+   2          //  Copyright (c) 深圳市赛元微电子有限公司
+   3          //      文件名称        : interface.c
+   4          //      作者            : 
+   5          //      模块功能        : 界面交互
+   6          //      局部函数列表:
+   7          //  最后更正日期: 2019/7/10
+   8          //      版本            : V1.0 
+   9          //  说明        ：  
+  10          //*************************************************************
+  11          #include "operation.h"
+  12          #include "NST1001.h"
+  13          #include "EC06_key.h"
+  14          #include "interface.h"
+  15          #include "BM8563.h"
+  16          #include "SC_it.h"
+  17          
+  18          
+  19          /* -----------------------------------------全局变量定义-----------------------------------*/
+  20          #define  home_page      0
+  21          #define  time6_page     1
+  22          #define  copy_page              2
+  23          #define  FCtemper_page  3
+  24          #define  hotcool_page   4 
+  25          #define  wind_page      5
+  26          #define  holiday_page   6
+  27          #define  clock_page     7
+  28          #define  menu_page      8
+  29          
+  30          
+  31          bit menu_clock_flag   = 0,
+  32                  menu_wind_flag    = 0,
+  33                  menu_holiday_flag = 0,
+  34                  menu_hotcool_flag = 0,
+  35                  menu_temp_flag    = 0,
+  36                  
+  37                  set_start_flag = 0,     
+  38                  set_over_flag = 0,
+  39                  
+  40                  blink_stop_flag = 0;
+  41          
+  42          //      u8 week;                                //星期
+  43          //      u8 mode;                            //模式
+  44          //      u16 temper;                             //温度
+  45          //      u8 state;                               //状态
+  46          //      u8 wind;                                //风量
+  47          //      u8 hour;                                //时间
+  48          //      u8 min;                         
+  49          //      u8 group;                               //组别
+  50          
+  51          NOW  now = {0,1,0,0,0,0,0,0};
+  52          
+  53          unsigned  char menu_grade = 0;
+  54          unsigned  int set_temper = 260;
+C51 COMPILER V9.56.0.0   OPERATION                                                         09/07/2020 22:21:34 PAGE 2   
+
+  55          
+  56          /*********************************************
+  57          函数名：MainFuction
+  58          功  能：主函数
+  59          形  参：
+  60          返回值：
+  61          备  注：
+  62          时  间：2020/06/24
+  63          **********************************************/
+  64          void MainFuction(void)
+  65          {       
+  66   1              
+  67   1              /*right长按进入初始化时间设置*/
+  68   1              if(Key_right_long == 1&&menu_grade == home_page&&menu_clock_flag == 0)          //right长按，设置初始时间
+  69   1              {       
+  70   2                      Key_right_long = 0;                                             //右键长按标志清零
+  71   2                      set_start_flag = 1;
+  72   2                      menu_clock_flag = 1;                            //关闭当前时钟显示标志位置一    
+  73   2                              
+  74   2              }
+  75   1      
+  76   1              /*right短按进入4档风量自动挡设置*/
+  77   1              if(Key_right_short == 1&&menu_grade == home_page&&menu_clock_flag == 0)         //right短按，设置风量模式
+  78   1              {
+  79   2                                              
+  80   2                      Key_right_short = 0;
+  81   2                      set_start_flag = 1;
+  82   2                      menu_wind_flag = 1;                                     //关闭当前风量显示标志位置一
+  83   2                      
+  84   2              }
+  85   1              
+  86   1              /*left长按进入节能模式设置*/
+  87   1              if(Key_left_long == 1&&menu_grade == home_page&&menu_clock_flag == 0)                   //right长按，设置节能模式
+  88   1              {       
+  89   2                      
+  90   2                      Key_left_long = 0;      
+  91   2                      set_start_flag = 1;             
+  92   2                      menu_holiday_flag = 1;                          //关闭当前节能显示标志位置一    
+  93   2      
+  94   2              }
+  95   1      
+  96   1              /*left短按进入冷热节能切换设置*/
+  97   1              if(Key_left_short == 1&&menu_grade == home_page&&menu_clock_flag == 0)          //right短按，设置冷热模式
+  98   1              {
+  99   2                                              
+ 100   2                      Key_left_short = 0;
+ 101   2                      set_start_flag = 1;     
+ 102   2                      menu_hotcool_flag = 1;                          //关闭当前冷热显示标志位置一
+ 103   2      
+ 104   2              }
+ 105   1              
+ 106   1              /*left旋转降低温度*/
+ 107   1              if(spin_left == 1&&menu_grade == home_page&&menu_clock_flag == 0)                       //左旋转反转，调节温度
+ 108   1              {
+ 109   2                      spin_left = 0;
+ 110   2                      blink_start_count = 0;                  
+ 111   2                      menu_temp_flag = 1;
+ 112   2                      set_temper--;                                   //递减
+ 113   2                      
+ 114   2              }
+ 115   1              
+ 116   1              /*right旋转增加温度*/
+C51 COMPILER V9.56.0.0   OPERATION                                                         09/07/2020 22:21:34 PAGE 3   
+
+ 117   1              if(spin_right == 1&&menu_grade == home_page&&menu_clock_flag == 0)                      //右旋转正转，调节温度
+ 118   1              {
+ 119   2                      spin_right = 0;
+ 120   2                      blink_start_count = 0;          
+ 121   2                      menu_temp_flag = 1;
+ 122   2                      set_temper++;                                   //累加
+ 123   2                      
+ 124   2              }
+ 125   1              
+ 126   1              /*spin长按进入菜单*/
+ 127   1              if(spin_long == 1&&menu_grade == home_page&&menu_clock_flag == 0)                       //右旋转正转，调节温度
+ 128   1              {
+ 129   2                      spin_long = 0;
+ 130   2                      menu_grade = menu_page;
+ 131   2                      set_start_flag = 1;     
+ 132   2              }
+ 133   1              
+ 134   1      //      /*长按旋转，判断调节不对，未加旋转分析*/
+ 135   1      //      if(Encoder_EC11_Scan() == 4&&menu_grade == home_page)                   //长按进入菜单
+ 136   1      //      {
+ 137   1      //                      menu_grade = menu_page;                                 //              
+ 138   1      //      }
+ 139   1              
+ 140   1              /*显示主界面*/
+ 141   1              if(menu_grade == home_page)                                             //主界面
+ 142   1              {
+ 143   2      
+ 144   2                      main_part();                                                            //显示主界面（时间状态）
+ 145   2              }
+ 146   1              /*设置时钟界面*/
+ 147   1              if(menu_clock_flag == 1&&menu_grade == home_page)
+ 148   1              {
+ 149   2      
+ 150   2                      clock_part();
+ 151   2              }       
+ 152   1              /*设置风量界面*/
+ 153   1              if(menu_wind_flag == 1&&menu_clock_flag == 0&&menu_grade == home_page)
+ 154   1              {
+ 155   2                      
+ 156   2                      wind_part();
+ 157   2              }       
+ 158   1              /*设置节能界面*/
+ 159   1              if(menu_holiday_flag == 1&&menu_clock_flag == 0&&menu_grade == home_page)
+ 160   1              {
+ 161   2                      
+ 162   2                      holiday_part();
+ 163   2              }       
+ 164   1              /*设置冷热界面*/
+ 165   1              if(menu_hotcool_flag == 1&&menu_clock_flag == 0&&menu_grade == home_page)
+ 166   1              {
+ 167   2                      
+ 168   2                      hotcool_part();                                                         
+ 169   2              }
+ 170   1      
+ 171   1              /*显示菜单栏*/
+ 172   1              if(menu_grade == menu_page)     
+ 173   1              {
+ 174   2              
+ 175   2                      menu_bar();                                     //进入菜单模块选择                      
+ 176   2              }
+ 177   1              if(menu_grade == time6_page)    
+ 178   1              {
+C51 COMPILER V9.56.0.0   OPERATION                                                         09/07/2020 22:21:34 PAGE 4   
+
+ 179   2              
+ 180   2                      time6_part();                           //进入定时6组时间模块选择                       
+ 181   2              }
+ 182   1              if(menu_grade == copy_page)     
+ 183   1              {
+ 184   2              
+ 185   2                      copy_part();                            //进入复制粘贴模块选择                  
+ 186   2              }
+ 187   1              if(menu_grade == FCtemper_page) 
+ 188   1              {
+ 189   2              
+ 190   2                      FCtemper_part();                        //进入摄氏度模块选择                    
+ 191   2              }
+ 192   1      
+ 193   1      }
+ 194          
+ 195          /*********************************************
+ 196          函数名：main_part
+ 197          功  能：显示当前所有状态主界面
+ 198          形  参：
+ 199          返回值：
+ 200          备  注：
+ 201          时  间：2020/08/20
+ 202          **********************************************/
+ 203          void main_part(void)            //显示主界面（时间状态）
+ 204          {
+ 205   1              static bit time_sign_blink,
+ 206   1                                      wind_sign_blink;
+ 207   1      
+ 208   1              
+ 209   1              /*时钟芯片的数据采集*/
+ 210   1                      if(TIME_5msFlag == 1)                      //五毫秒调用时钟芯片
+ 211   1                      {
+ 212   2                              TIME_5msFlag = 0;
+ 213   2                              BM8563_get_time();                              
+ 214   2                      }
+ 215   1                      /*温度探头的数据采集*/
+ 216   1                      if(temp_start_flag == 1)                    //一秒判断一次温度
+ 217   1                      {                               
+ 218   2                              GetNST1001Temp();              //调用函数读取NST1001温度                  
+ 219   2                      }       
+ 220   1                      
+ 221   1              /*界面数据显示*/                
+ 222   1                      if(TIME_100msFlag == 1)                         //LCD500ms显示部分
+ 223   1                      {
+ 224   2                              TIME_100msFlag = 0;
+ 225   2                              
+ 226   2                              LCD_clean(TIMER);
+ 227   2                              LCD_clean(TEMPER);
+ 228   2                              LCD_clean(GROUP);
+ 229   2                              
+ 230   2                              /*时间的示数显示*/
+ 231   2                              if(menu_clock_flag == 0)
+ 232   2                              {       
+ 233   3                                      
+ 234   3                                      LCD_time(now.hour,now.min,now.week,1,1,1);              //显示时钟芯片时间
+ 235   3                                      DDIC_Control(DDIC_SEG6,DDIC_COM4,time_sign_blink);                      //S23":"
+ 236   3                              }
+ 237   2                              /*风量的示数显示*/
+ 238   2                              if(menu_wind_flag == 0)
+ 239   2                                      LCD_wind(now.wind);                                             //显示当前风量
+ 240   2                              
+C51 COMPILER V9.56.0.0   OPERATION                                                         09/07/2020 22:21:34 PAGE 5   
+
+ 241   2                              /*冷热节能的示数显示*/
+ 242   2                              if(menu_hotcool_flag == 0&&menu_holiday_flag == 0)
+ 243   2                                      LCD_mode(now.mode);                                                     //显示冷热节能模式
+ 244   2                              
+ 245   2                              /*温度探头的示数显示*/
+ 246   2                              if(menu_temp_flag == 0)
+ 247   2                              {       
+ 248   3                                      if(temp_judge_flag == 0)                //判断温度探头是否有效
+ 249   3                                      {
+ 250   4                                              now.temper = N_Temper;
+ 251   4                                              LCD_sTemperature(now.temper);                   //显示当前温度
+ 252   4                                      }
+ 253   3                                      else
+ 254   3                                      {
+ 255   4                                              LCD_sTemperature(888);                  //显示888再清除个别段显示为ERR
+ 256   4                                              LCD_Temper_error();
+ 257   4                                      }
+ 258   3                                              LCD_state(2);                                                   //显示当前状态为“real”
+ 259   3                              }
+ 260   2                              
+ 261   2                              
+ 262   2                              if(now.wind == 0)
+ 263   2                                      DDIC_Control(DDIC_SEG20,DDIC_COM4,wind_sign_blink);             //风挡
+ 264   2                              else
+ 265   2                                      DDIC_Control(DDIC_SEG20,DDIC_COM4,1);                                                           
+ 266   2                      }
+ 267   1                      
+ 268   1              if(TIME_500msFlag == 1)
+ 269   1              {       
+ 270   2                      TIME_500msFlag = 0;
+ 271   2                      if(menu_clock_flag == 0)
+ 272   2                              time_sign_blink = ~time_sign_blink;     
+ 273   2                      if(now.wind == 0)
+ 274   2                              wind_sign_blink = ~wind_sign_blink;
+ 275   2              }
+ 276   1      
+ 277   1                      
+ 278   1              /*调节温度的示数显示*/
+ 279   1                      if(menu_temp_flag == 1)
+ 280   1                      {       
+ 281   2                              now.temper = set_temper;
+ 282   2                              LCD_sTemperature(now.temper);                   //显示设置温度
+ 283   2                              LCD_state(1);                   //显示当前状态为“set”
+ 284   2                              
+ 285   2                      }
+ 286   1                      if(blink_start_count >= 4)
+ 287   1                              menu_temp_flag = 0;
+ 288   1      }       
+ 289          
+ 290          /*********************************************
+ 291          函数名：hotcool_part
+ 292          功  能：显示设置冷热节能模式
+ 293          形  参：
+ 294          返回值：
+ 295          备  注：
+ 296          时  间：2020/08/20
+ 297          **********************************************/
+ 298          void hotcool_part(void)
+ 299          {
+ 300   1              
+ 301   1              now.mode++;
+ 302   1              if(now.mode >= 3)
+C51 COMPILER V9.56.0.0   OPERATION                                                         09/07/2020 22:21:34 PAGE 6   
+
+ 303   1                      now.mode = 1;
+ 304   1              menu_hotcool_flag = 0;
+ 305   1      }
+ 306          
+ 307          /*********************************************
+ 308          函数名：wind_part
+ 309          功  能：显示设置风量模式
+ 310          形  参：
+ 311          返回值：
+ 312          备  注：
+ 313          时  间：2020/08/20
+ 314          **********************************************/
+ 315          void wind_part(void)
+ 316          {
+ 317   1      
+ 318   1              
+ 319   1              now.wind++;
+ 320   1      //              set_wind++;
+ 321   1              if(now.wind == 5)
+ 322   1                      now.wind = 0;
+ 323   1              menu_wind_flag = 0;
+ 324   1      }
+ 325          
+ 326          /*********************************************
+ 327          函数名：holiday_part
+ 328          功  能：显示设置假期模式
+ 329          形  参：
+ 330          返回值：
+ 331          备  注：
+ 332          时  间：2020/08/20
+ 333          **********************************************/
+ 334          void holiday_part(void)
+ 335          {
+ 336   1              now.mode = 3;
+ 337   1              menu_holiday_flag = 0;
+ 338   1              
+ 339   1      }
+ 340          
+ 341          /*********************************************
+ 342          函数名：clock_part
+ 343          功  能：显示设置时间模式
+ 344          形  参：
+ 345          返回值：
+ 346          备  注：
+ 347          时  间：2020/08/20
+ 348          **********************************************/
+ 349          void clock_part(void)
+ 350          {
+ 351   1              static uint8_t clock_sect = 1;
+ 352   1              static uint8_t set_hour = 0;
+ 353   1              static uint8_t set_min = 0;
+ 354   1              static uint8_t set_week = 0;
+ 355   1                              
+ 356   1              static bit hour_flag = 0,
+ 357   1                                      min_flag = 0,
+ 358   1                                      week_flag = 0;
+ 359   1              
+ 360   1      static bit hour_blink_flag = 1,
+ 361   1                              min_blink_flag = 1,
+ 362   1                              week_blink_flag = 1;
+ 363   1      
+ 364   1              if((spin_short == 1||Key_right_short == 1)&&set_start_flag == 0)
+C51 COMPILER V9.56.0.0   OPERATION                                                         09/07/2020 22:21:34 PAGE 7   
+
+ 365   1              {
+ 366   2                      clock_sect++;
+ 367   2                      spin_short = 0;
+ 368   2                      Key_right_short = 0;    
+ 369   2              }
+ 370   1              if(Key_left_short == 1&&set_start_flag == 0)
+ 371   1              {
+ 372   2                      clock_sect--;
+ 373   2                      Key_left_short = 0;
+ 374   2                      if(clock_sect == 0)
+ 375   2                              clock_sect = 3;         
+ 376   2              }       
+ 377   1              
+ 378   1              if(set_start_flag == 1)
+ 379   1              {
+ 380   2                      set_start_flag = 0;
+ 381   2                      set_hour = now.hour;
+ 382   2                      set_min = now.min;
+ 383   2                      set_week = now.week;
+ 384   2              }
+ 385   1              
+ 386   1              switch(clock_sect)                                              //中间键按下调节位置
+ 387   1              {
+ 388   2                      case 1: 
+ 389   2                                      hour_flag = 1;
+ 390   2                                      min_flag = 0;
+ 391   2                                      week_flag = 0;
+ 392   2                                      
+ 393   2                              if(spin_right == 1&&menu_grade == home_page)            //up增加数字    
+ 394   2                              {
+ 395   3                                      set_hour++;
+ 396   3                                      spin_right = 0;
+ 397   3                                      blink_start_count = 0;
+ 398   3                                      if(set_hour >= 24)                              //24时钟数值循环
+ 399   3                                              set_hour = 0;
+ 400   3                              }
+ 401   2                              if(spin_left == 1&&menu_grade == home_page)
+ 402   2                              {       
+ 403   3                                      set_hour--;
+ 404   3                                      spin_left = 0;
+ 405   3                                      blink_start_count = 0;
+ 406   3                                      if(set_hour == 255)                             //uchar0-255，反向循环
+ 407   3                                              set_hour = 23;
+ 408   3                              }
+ 409   2                                                                                      
+ 410   2                              break;
+ 411   2                      case 2:
+ 412   2                                      hour_flag = 0;
+ 413   2                                      min_flag = 1;
+ 414   2                                      week_flag = 0;
+ 415   2                                      
+ 416   2                              if(spin_right == 1&&menu_grade == home_page)            //up增加数字    
+ 417   2                              {
+ 418   3                                      set_min++;
+ 419   3                                      spin_right = 0;
+ 420   3                                      blink_start_count = 0;
+ 421   3                                      if(set_min >= 60)                               //60分钟数值循环
+ 422   3                                              set_min = 0;    
+ 423   3                              }
+ 424   2                              if(spin_left == 1&&menu_grade == home_page)
+ 425   2                              {       
+ 426   3                                      set_min--;
+C51 COMPILER V9.56.0.0   OPERATION                                                         09/07/2020 22:21:34 PAGE 8   
+
+ 427   3                                      spin_left = 0;          
+ 428   3                                      blink_start_count = 0;
+ 429   3                                      if(set_min == 255)                              //uchar0-255,反向循环
+ 430   3                                              set_min = 59;   
+ 431   3                              }
+ 432   2                                                                                                      
+ 433   2                              break;  
+ 434   2                      case 3:
+ 435   2                                      hour_flag = 0;
+ 436   2                                      min_flag = 0;
+ 437   2                                      week_flag = 1;
+ 438   2                                      
+ 439   2                              if(spin_right == 1&&menu_grade == home_page)            //up增加数字    
+ 440   2                              {
+ 441   3                                      set_week++;
+ 442   3                                      spin_right = 0;
+ 443   3                                      blink_start_count = 0;
+ 444   3                                      if(set_week >= 7)                               //60分钟数值循环
+ 445   3                                              set_week = 0;                           
+ 446   3                              }
+ 447   2                              if(spin_left == 1&&menu_grade == home_page)
+ 448   2                              {       
+ 449   3                                      set_week--;
+ 450   3                                      spin_left = 0;
+ 451   3                                      blink_start_count = 0;
+ 452   3                                      if(set_week == 255)                             //uchar0-255,反向循环
+ 453   3                                              set_week = 6;
+ 454   3                              }
+ 455   2                      
+ 456   2                              break;
+ 457   2                      case 4:
+ 458   2                                      set_over_flag = 1;                      //开启设置结束标志
+ 459   2      
+ 460   2                              break;
+ 461   2              }
+ 462   1              
+ 463   1              if(TIME_300msFlag == 1)
+ 464   1              {
+ 465   2                      TIME_300msFlag = 0;
+ 466   2                      if(hour_flag == 1)              
+ 467   2                      {       
+ 468   3                              hour_blink_flag = ~hour_blink_flag;
+ 469   3                              min_blink_flag = 1;
+ 470   3                              week_blink_flag = 1;
+ 471   3                      }
+ 472   2                      if(min_flag == 1)
+ 473   2                      {       
+ 474   3                              hour_blink_flag = 1;
+ 475   3                              min_blink_flag = ~min_blink_flag;
+ 476   3                              week_blink_flag = 1;
+ 477   3                      }
+ 478   2                      if(week_flag == 1)
+ 479   2                      {
+ 480   3                              hour_blink_flag = 1;
+ 481   3                              min_blink_flag = 1;
+ 482   3                              week_blink_flag = ~week_blink_flag;
+ 483   3                      }
+ 484   2              }
+ 485   1              
+ 486   1                      if(blink_start_count >= 2)
+ 487   1                              LCD_time(set_hour,set_min,set_week,hour_blink_flag,min_blink_flag,week_blink_flag);
+ 488   1                      else
+C51 COMPILER V9.56.0.0   OPERATION                                                         09/07/2020 22:21:34 PAGE 9   
+
+ 489   1                              LCD_time(set_hour,set_min,set_week,1,1,1);
+ 490   1      
+ 491   1              DDIC_Control(DDIC_SEG6,DDIC_COM4,1);            //S23":"
+ 492   1              
+ 493   1              if(blink_start_count >= 10)     
+ 494   1                      blink_start_count = 2;
+ 495   1              
+ 496   1              
+ 497   1              if(set_over_flag == 1)                  //设置时间完成，改变主界面标志位，返回主界面
+ 498   1              {
+ 499   2                      now.week = set_week;
+ 500   2                      
+ 501   2                      set_min =(set_min/10*16)+set_min%10;                    //分钟十进制数对应为BCD 
+ 502   2                      set_hour =(set_hour/10*16)+set_hour%10;                 //时钟十进制数对应为BCD 
+ 503   2      
+ 504   2                      BM8563_send_add_byte(0x03,set_min);            
+ 505   2                      BM8563_send_add_byte(0x04,set_hour);  
+ 506   2      
+ 507   2                      set_over_flag = 0;                      //标志位复原
+ 508   2                      menu_clock_flag = 0;            
+ 509   2                      clock_sect = 1;         
+ 510   2              }
+ 511   1              
+ 512   1      }
+ 513          
+ 514          /*********************************************
+ 515          函数名：menu_bar
+ 516          功  能：显示菜单模式
+ 517          形  参：
+ 518          返回值：
+ 519          备  注：
+ 520          时  间：2020/08/20
+ 521          **********************************************/
+ 522          void menu_bar(void)
+ 523          {
+ 524   1              static uint8_t menu_sect = 1;
+ 525   1                              uint8_t group = 0;
+ 526   1              static bit menu_time6_flag = 0,
+ 527   1                                      menu_copy_flag = 0,
+ 528   1                                      menu_FCtemper_flag = 0;         
+ 529   1      //                              shift_flag = 0;
+ 530   1              
+ 531   1              if(set_start_flag == 1)
+ 532   1              {
+ 533   2                      set_start_flag = 0;
+ 534   2                      LCD_cleanALL();
+ 535   2                      menu_sect = 1;
+ 536   2              }
+ 537   1              
+ 538   1              if(spin_right == 1&&menu_grade == menu_page)
+ 539   1              {
+ 540   2                      menu_sect++;
+ 541   2      
+ 542   2                      spin_right = 0;
+ 543   2              }       
+ 544   1              
+ 545   1              if(spin_left == 1&&menu_grade == menu_page)
+ 546   1              {
+ 547   2                      menu_sect--;
+ 548   2      
+ 549   2                      spin_left = 0;
+ 550   2                      if(menu_sect == 0)
+C51 COMPILER V9.56.0.0   OPERATION                                                         09/07/2020 22:21:34 PAGE 10  
+
+ 551   2                              menu_sect = 3;          
+ 552   2              }               
+ 553   1              
+ 554   1              if(Key_left_short == 1&&menu_grade == menu_page)
+ 555   1              {       
+ 556   2                      menu_grade = home_page;
+ 557   2                      Key_left_short = 0;             
+ 558   2      
+ 559   2              }
+ 560   1      
+ 561   1              switch(menu_sect)                                               //中间键按下调节位置
+ 562   1              {
+ 563   2                      case 1: 
+ 564   2                                      menu_time6_flag = 1;
+ 565   2                                      menu_copy_flag = 0;
+ 566   2                                      menu_FCtemper_flag = 0;
+ 567   2                      
+ 568   2                              if(Key_right_short == 1||spin_short == 1&&menu_grade == menu_page)
+ 569   2                              {       
+ 570   3                                      menu_grade = time6_page;
+ 571   3                                      Key_right_short = 0;
+ 572   3                                      spin_short = 0;
+ 573   3                                      set_start_flag = 1;
+ 574   3                              }
+ 575   2                                                                                      
+ 576   2                              break;
+ 577   2                      case 2:
+ 578   2                                      menu_time6_flag = 0;
+ 579   2                                      menu_copy_flag = 1;
+ 580   2                                      menu_FCtemper_flag = 0;
+ 581   2                      
+ 582   2                              if(Key_right_short == 1||spin_short == 1&&menu_grade == menu_page)
+ 583   2                              {       
+ 584   3                                      menu_grade = copy_page;
+ 585   3                                      Key_right_short = 0;
+ 586   3                                      spin_short = 0;                         
+ 587   3                                      set_start_flag = 1;
+ 588   3                              }
+ 589   2                                                                                                      
+ 590   2                              break;  
+ 591   2                      case 3:
+ 592   2                                      menu_time6_flag = 0;
+ 593   2                                      menu_copy_flag = 0;
+ 594   2                                      menu_FCtemper_flag = 1;
+ 595   2                      
+ 596   2                              if(Key_right_short == 1&&spin_short == 1&&menu_grade == menu_page)
+ 597   2                              {       
+ 598   3                                      menu_grade = FCtemper_page;
+ 599   3                                      Key_right_short = 0;
+ 600   3                                      spin_short = 0;
+ 601   3                                      set_start_flag = 1;
+ 602   3                              }
+ 603   2                      
+ 604   2                              break;
+ 605   2                      case 4:
+ 606   2                                      menu_sect = 1;                                  //
+ 607   2      
+ 608   2                              break;
+ 609   2              }
+ 610   1              if(TIME_100msFlag == 1)
+ 611   1              {       
+ 612   2                      LCD_clean(TIMER);
+C51 COMPILER V9.56.0.0   OPERATION                                                         09/07/2020 22:21:34 PAGE 11  
+
+ 613   2                      LCD_clean(TEMPER);
+ 614   2                      LCD_clean(GROUP);
+ 615   2                      DDIC_Control(DDIC_SEG6,DDIC_COM4,0);                    //S23":"
+ 616   2                      
+ 617   2                      TIME_100msFlag = 0;
+ 618   2                      
+ 619   2                      if(menu_time6_flag == 1)
+ 620   2                      {
+ 621   3                              LCD_number(1,0,1);
+ 622   3                              LCD_number(2,1,1);
+ 623   3                              for(group = 0;group < 7;group++)
+ 624   3                              LCD_group(group);
+ 625   3      
+ 626   3                              LCD_time(now.hour,now.min,now.week,1,1,1);              //显示时钟芯片时间
+ 627   3                              DDIC_Control(DDIC_SEG6,DDIC_COM4,1);                    //S23":"
+ 628   3                      }       
+ 629   2                      else if(menu_copy_flag == 1)
+ 630   2                      {
+ 631   3                              LCD_number(1,0,1);
+ 632   3                              LCD_number(2,2,1);
+ 633   3                              LCD_week(now.week,1);
+ 634   3                              LCD_group(7);
+ 635   3                              LCD_group(8);           
+ 636   3                      }       
+ 637   2                      else if(menu_FCtemper_flag == 1)
+ 638   2                      {
+ 639   3                              LCD_clean(GROUP);
+ 640   3                              LCD_number(1,0,1);
+ 641   3                              LCD_number(2,3,1);
+ 642   3                              DDIC_Control(DDIC_SEG3,DDIC_COM7,DDIC_Control_ON);              //S22"F"
+ 643   3                              DDIC_Control(DDIC_SEG1,DDIC_COM7,DDIC_Control_ON);              //S21"C"        
+ 644   3                      }       
+ 645   2              }       
+ 646   1              
+ 647   1      }
+ 648          /*********************************************
+ 649          函数名：time6_part
+ 650          功  能：设置6组时间模式
+ 651          形  参：
+ 652          返回值：
+ 653          备  注：
+ 654          时  间：2020/08/26
+ 655          **********************************************/
+ 656          void time6_part(void)
+ 657          {
+ 658   1       static  uint8_t time6_week_sect = 0;
+ 659   1              if(set_start_flag == 1)                 //首次进入标志位，清屏
+ 660   1              {
+ 661   2                      LCD_cleanALL();
+ 662   2                      set_start_flag = 0;                     //关闭首次进入标志
+ 663   2              }
+ 664   1                      
+ 665   1              if(spin_right == 1||Key_right_short == 1&&menu_grade == time6_page)
+ 666   1              {
+ 667   2                      time6_week_sect++;
+ 668   2                      spin_right = 0;
+ 669   2              }       
+ 670   1              
+ 671   1              if(spin_left == 1||Key_left_short == 1&&menu_grade == time6_page)
+ 672   1              {
+ 673   2                      time6_week_sect--;
+ 674   2                      spin_left = 0;          
+C51 COMPILER V9.56.0.0   OPERATION                                                         09/07/2020 22:21:34 PAGE 12  
+
+ 675   2              }
+ 676   1              
+ 677   1              if(spin_short == 1&&menu_grade == time6_page)
+ 678   1              {
+ 679   2                      set_over_flag = 1;
+ 680   2              }
+ 681   1              
+ 682   1              
+ 683   1      }       
+ 684          
+ 685          /*********************************************
+ 686          函数名：copy_part
+ 687          功  能：复制粘贴模式
+ 688          形  参：
+ 689          返回值：
+ 690          备  注：
+ 691          时  间：2020/08/26
+ 692          **********************************************/
+ 693          void copy_part(void)
+ 694          {
+ 695   1              
+ 696   1              
+ 697   1      }       
+ 698          
+ 699          /*********************************************
+ 700          函数名：FCtemper_part
+ 701          功  能：摄氏度模式选择
+ 702          形  参：
+ 703          返回值：
+ 704          备  注：
+ 705          时  间：2020/08/26
+ 706          **********************************************/
+ 707          void FCtemper_part(void)
+ 708          {
+ 709   1              
+ 710   1              
+ 711   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1238    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     29       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =     19    ----
+   EDATA SIZE       =   ----    ----
+   HDATA SIZE       =   ----    ----
+   XDATA CONST SIZE =   ----    ----
+   FAR CONST SIZE   =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

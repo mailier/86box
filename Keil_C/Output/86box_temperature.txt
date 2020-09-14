@@ -1,0 +1,14 @@
+
+LX51 LINKER/LOCATER V4.66.66.0 - SN: Eval Version
+COPYRIGHT ARM Germany GmbH 1995 - 2016
+C:\Users\Administrator\Desktop\86box_temperature\Keil_C\Output\main.obj,C:\Users\Administrator\Desktop\86box_temperature\Keil_C\Output\sc95f8x1x_ddic.obj,C:\Users\Administrator\Desktop\86box_temperature\Keil_C\Output\sc95f8x1x_gpio.obj,C:\Users\Administrator\Desktop\86box_temperature\Keil_C\Output\sc95f8x1x_option.obj,C:\Users\Administrator\Desktop\86box_temperature\Keil_C\Output\sc95f8x1x_timer2.obj,C:\Users\Administrator\Desktop\86box_temperature\Keil_C\Output\SC_Init.obj,C:\Users\Administrator\Desktop\86box_temperature\Keil_C\Output\SC_it.obj,C:\Users\Administrator\Desktop\86box_temperature\Keil_C\Output\STARTUP.obj TO ..\Output\86box_temperature PRINT(..\Output\86box_temperature.map) REMOVEUNUSED CLASSES ( CODE (C:0X100), CONST (C:0X100)) ******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 04A7H BYTE (58%) *
+******************************************************************************
+
+Program Size: data=14.0 xdata=30 const=0 code=752
+LX51 RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
+
+Extended 8051/251 Object to Hex File Converter V1.45.0.0
+COPYRIGHT KEIL ELEKTRONIK GmbH 2000 - 2015
+
+GENERATING INTEL HEX FILE: ..\Output\86box_temperature.hex

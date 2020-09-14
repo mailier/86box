@@ -1,0 +1,633 @@
+LX51 LINKER/LOCATER V4.66.66.0                                                          08/14/2020  12:36:45  PAGE 1
+
+
+LX51 LINKER/LOCATER V4.66.66.0, INVOKED BY:
+D:\MDK\BACKUP.001\C51\BIN\LX51.EXE C:\USERS\ADMINISTRATOR\DESKTOP\86BOX_TEMPERATURE\KEIL_C\OUTPUT\MAIN.OBJ, C:\USERS\ADM
+>> INISTRATOR\DESKTOP\86BOX_TEMPERATURE\KEIL_C\OUTPUT\SC95F8X1X_DDIC.OBJ, C:\USERS\ADMINISTRATOR\DESKTOP\86BOX_TEMPERATU
+>> RE\KEIL_C\OUTPUT\SC95F8X1X_GPIO.OBJ, C:\USERS\ADMINISTRATOR\DESKTOP\86BOX_TEMPERATURE\KEIL_C\OUTPUT\SC95F8X1X_OPTION.
+>> OBJ, C:\USERS\ADMINISTRATOR\DESKTOP\86BOX_TEMPERATURE\KEIL_C\OUTPUT\SC95F8X1X_TIMER2.OBJ, C:\USERS\ADMINISTRATOR\DESK
+>> TOP\86BOX_TEMPERATURE\KEIL_C\OUTPUT\SC_INIT.OBJ, C:\USERS\ADMINISTRATOR\DESKTOP\86BOX_TEMPERATURE\KEIL_C\OUTPUT\SC_IT
+>> .OBJ, C:\USERS\ADMINISTRATOR\DESKTOP\86BOX_TEMPERATURE\KEIL_C\OUTPUT\STARTUP.OBJ TO ..\OUTPUT\86BOX_TEMPERATURE PRINT
+>>  (..\Output\86box_temperature.map) REMOVEUNUSED CLASSES (CODE (C:0X100), CONST (C:0X100))
+
+
+CPU MODE:     8051 MODE
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  C:\USERS\ADMINISTRATOR\DESKTOP\86BOX_TEMPERATURE\KEIL_C\OUTPUT\MAIN.OBJ (MAIN)
+         COMMENT TYPE 0: C51 V9.56.0.0
+  C:\USERS\ADMINISTRATOR\DESKTOP\86BOX_TEMPERATURE\KEIL_C\OUTPUT\SC95F8X1X_DDIC.OBJ (SC95F8X1X_DDIC)
+         COMMENT TYPE 0: C51 V9.56.0.0
+  C:\USERS\ADMINISTRATOR\DESKTOP\86BOX_TEMPERATURE\KEIL_C\OUTPUT\SC95F8X1X_GPIO.OBJ (SC95F8X1X_GPIO)
+         COMMENT TYPE 0: C51 V9.56.0.0
+  C:\USERS\ADMINISTRATOR\DESKTOP\86BOX_TEMPERATURE\KEIL_C\OUTPUT\SC95F8X1X_OPTION.OBJ (SC95F8X1X_OPTION)
+         COMMENT TYPE 0: C51 V9.56.0.0
+  C:\USERS\ADMINISTRATOR\DESKTOP\86BOX_TEMPERATURE\KEIL_C\OUTPUT\SC95F8X1X_TIMER2.OBJ (SC95F8X1X_TIMER2)
+         COMMENT TYPE 0: C51 V9.56.0.0
+  C:\USERS\ADMINISTRATOR\DESKTOP\86BOX_TEMPERATURE\KEIL_C\OUTPUT\SC_INIT.OBJ (SC_INIT)
+         COMMENT TYPE 0: C51 V9.56.0.0
+  C:\USERS\ADMINISTRATOR\DESKTOP\86BOX_TEMPERATURE\KEIL_C\OUTPUT\SC_IT.OBJ (SC_IT)
+         COMMENT TYPE 0: C51 V9.56.0.0
+  C:\USERS\ADMINISTRATOR\DESKTOP\86BOX_TEMPERATURE\KEIL_C\OUTPUT\STARTUP.OBJ (?C_STARTUP)
+         COMMENT TYPE 1: A51 / ASM51 Assembler
+
+
+ACTIVE MEMORY CLASSES OF MODULE:  ..\OUTPUT\86BOX_TEMPERATURE (MAIN)
+
+BASE        START       END         USED      MEMORY CLASS
+==========================================================
+C:000000H   C:000100H   C:00FFFFH   0002F0H   CODE
+C:000000H   C:000100H   C:00FFFFH             CONST
+I:000000H   I:000000H   I:00007FH   00000DH   DATA
+X:000000H   X:000000H   X:00FFFFH   00001EH   XDATA
+I:000000H   I:000000H   I:0000FFH   000001H   IDATA
+
+
+MEMORY MAP OF MODULE:  ..\OUTPUT\86BOX_TEMPERATURE (MAIN)
+
+
+START     STOP      LENGTH    ALIGN  RELOC    MEMORY CLASS   SEGMENT NAME
+=========================================================================
+
+* * * * * * * * * * *   D A T A   M E M O R Y   * * * * * * * * * * * * *
+000000H   000007H   000008H   ---    AT..     DATA           "REG BANK 0"
+000008H   00000CH   000005H   BYTE   UNIT     DATA           _DATA_GROUP_
+00000DH   00000DH   000001H   BYTE   UNIT     IDATA          ?STACK
+
+* * * * * * * * * * *   C O D E   M E M O R Y   * * * * * * * * * * * * *
+000000H   000002H   000003H   ---    OFFS..   CODE           ?CO??C_STARTUP?0
+000003H   000005H   000003H   BYTE   OFFS..   CODE           ?SC_IT?00003
+000006H   00000AH   000005H   ---    ---      **GAP**
+00000BH   00000DH   000003H   BYTE   OFFS..   CODE           ?SC_IT?0000B
+00000EH   000012H   000005H   ---    ---      **GAP**
+000013H   000015H   000003H   BYTE   OFFS..   CODE           ?SC_IT?00013
+000016H   00001AH   000005H   ---    ---      **GAP**
+00001BH   00001DH   000003H   BYTE   OFFS..   CODE           ?SC_IT?0001B
+00001EH   000022H   000005H   ---    ---      **GAP**
+000023H   000025H   000003H   BYTE   OFFS..   CODE           ?SC_IT?00023
+LX51 LINKER/LOCATER V4.66.66.0                                                        08/14/2020  12:36:45  PAGE 2
+
+
+000026H   00002AH   000005H   ---    ---      **GAP**
+00002BH   00002DH   000003H   BYTE   OFFS..   CODE           ?SC_IT?0002B
+00002EH   000032H   000005H   ---    ---      **GAP**
+000033H   000035H   000003H   BYTE   OFFS..   CODE           ?SC_IT?00033
+000036H   00003AH   000005H   ---    ---      **GAP**
+00003BH   00003DH   000003H   BYTE   OFFS..   CODE           ?SC_IT?0003B
+00003EH   000042H   000005H   ---    ---      **GAP**
+000043H   000045H   000003H   BYTE   OFFS..   CODE           ?SC_IT?00043
+000046H   00004AH   000005H   ---    ---      **GAP**
+00004BH   00004DH   000003H   BYTE   OFFS..   CODE           ?SC_IT?0004B
+00004EH   000052H   000005H   ---    ---      **GAP**
+000053H   000055H   000003H   BYTE   OFFS..   CODE           ?SC_IT?00053
+000056H   000062H   00000DH   ---    ---      **GAP**
+000063H   000065H   000003H   BYTE   OFFS..   CODE           ?SC_IT?00063
+000066H   00006AH   000005H   ---    ---      **GAP**
+00006BH   00006DH   000003H   BYTE   OFFS..   CODE           ?SC_IT?0006B
+00006EH   000072H   000005H   ---    ---      **GAP**
+000073H   000075H   000003H   BYTE   OFFS..   CODE           ?SC_IT?00073
+000076H   00007AH   000005H   ---    ---      **GAP**
+00007BH   00007DH   000003H   BYTE   OFFS..   CODE           ?SC_IT?0007B
+00007EH   000082H   000005H   ---    ---      **GAP**
+000083H   000085H   000003H   BYTE   OFFS..   CODE           ?SC_IT?00083
+000086H   0000FFH   00007AH   ---    ---      **GAP**
+000100H   00013EH   00003FH   BYTE   UNIT     CODE           ?PR?SC_GPIO_INIT?SC_INIT
+00013FH   000165H   000027H   BYTE   UNIT     CODE           ?PR?SC_DDIC_INIT?SC_INIT
+000166H   000188H   000023H   BYTE   UNIT     CODE           ?PR?SC_OPTION_INIT?SC_INIT
+000189H   0001A7H   00001FH   BYTE   UNIT     CODE           ?PR?_TIM2_TIMEBASEINIT?SC95F8X1X_TIMER2
+0001A8H   0001C6H   00001FH   BYTE   UNIT     CODE           ?PR?SC_TIM2_INIT?SC_INIT
+0001C7H   0001E2H   00001CH   BYTE   UNIT     CODE           ?PR?_OPTION_ADC_VREFCONFIG?SC95F8X1X_OPTION
+0001E3H   0001F7H   000015H   BYTE   UNIT     CODE           ?PR?_TIM2_ITCONFIG?SC95F8X1X_TIMER2
+0001F8H   000209H   000012H   BYTE   UNIT     CODE           ?PR?_DDIC_INIT?SC95F8X1X_DDIC
+00020AH   00021AH   000011H   BYTE   UNIT     CODE           ?PR?_TIM2_PRESCALERSELECTION?SC95F8X1X_TIMER2
+00021BH   00022AH   000010H   BYTE   UNIT     CODE           ?PR?_DDIC_LCDCONFIG?SC95F8X1X_DDIC
+00022BH   00023AH   000010H   BYTE   UNIT     CODE           ?PR?_TIM2_WORKMODE1CONFIG?SC95F8X1X_TIMER2
+00023BH   000249H   00000FH   BYTE   UNIT     CODE           ?PR?SC_INIT?SC_INIT
+00024AH   000257H   00000EH   BYTE   UNIT     CODE           ?PR?_OPTION_XTIPLL_CMD?SC95F8X1X_OPTION
+000258H   000265H   00000EH   BYTE   UNIT     CODE           ?PR?_OPTION_RST_PIN_CMD?SC95F8X1X_OPTION
+000266H   000273H   00000EH   BYTE   UNIT     CODE           ?PR?_OPTION_JTG_CMD?SC95F8X1X_OPTION
+000274H   00027FH   00000CH   BYTE   UNIT     CODE           ?PR?_TIM2_CMD?SC95F8X1X_TIMER2
+000280H   00028AH   00000BH   BYTE   UNIT     CODE           ?PR?_DDIC_DMOD_SELCET?SC95F8X1X_DDIC
+00028BH   000295H   00000BH   BYTE   UNIT     CODE           ?PR?_DDIC_OUTPUTPINOFDUTYCYCLED4?SC95F8X1X_DDIC
+000296H   0002A0H   00000BH   BYTE   UNIT     CODE           ?PR?_DDIC_CMD?SC95F8X1X_DDIC
+0002A1H   0002ABH   00000BH   BYTE   UNIT     CODE           ?PR?_OPTION_SYSCLK_INIT?SC95F8X1X_OPTION
+0002ACH   0002B6H   00000BH   BYTE   UNIT     CODE           ?PR?_OPTION_LVR_INIT?SC95F8X1X_OPTION
+0002B7H   0002C1H   00000BH   BYTE   UNIT     CODE           ?PR?_OPTION_IAP_SETOPERATERANGE?SC95F8X1X_OPTION
+0002C2H   0002C5H   000004H   BYTE   UNIT     CODE           ?PR?INT0INTERRUPT?SC_IT
+0002C6H   0002C9H   000004H   BYTE   UNIT     CODE           ?PR?INT1INTERRUPT?SC_IT
+0002CAH   0002CCH   000003H   BYTE   UNIT     CODE           ?PR?MAIN?MAIN
+0002CDH   0002CDH   000001H   BYTE   UNIT     CODE           ?PR?TIMER0INTERRUPT?SC_IT
+0002CEH   0002CEH   000001H   BYTE   UNIT     CODE           ?PR?TIMER1INTERRUPT?SC_IT
+0002CFH   0002CFH   000001H   BYTE   UNIT     CODE           ?PR?UART0INTERRUPT?SC_IT
+0002D0H   0002D0H   000001H   BYTE   UNIT     CODE           ?PR?TIMER2INTERRUPT?SC_IT
+0002D1H   0002D1H   000001H   BYTE   UNIT     CODE           ?PR?ADCINTERRUPT?SC_IT
+0002D2H   0002D2H   000001H   BYTE   UNIT     CODE           ?PR?USCI0INTERRUPT?SC_IT
+0002D3H   0002D3H   000001H   BYTE   UNIT     CODE           ?PR?PWMINTERRUPT?SC_IT
+0002D4H   0002D4H   000001H   BYTE   UNIT     CODE           ?PR?BTMINTERRUPT?SC_IT
+0002D5H   0002D5H   000001H   BYTE   UNIT     CODE           ?PR?INT2INTERRUPT?SC_IT
+0002D6H   0002D6H   000001H   BYTE   UNIT     CODE           ?PR?ACMPINTERRUPT?SC_IT
+0002D7H   0002D7H   000001H   BYTE   UNIT     CODE           ?PR?TIMER3INTERRUPT?SC_IT
+0002D8H   0002D8H   000001H   BYTE   UNIT     CODE           ?PR?TIMER4INTERRUPT?SC_IT
+0002D9H   0002D9H   000001H   BYTE   UNIT     CODE           ?PR?USCI1INTERRUPT?SC_IT
+0002DAH   0002DAH   000001H   BYTE   UNIT     CODE           ?PR?USCI2INTERRUPT?SC_IT
+0002DBH   0007FFH   000525H   ---    ---      **GAP**
+000800H   0008C7H   0000C8H   BYTE   UNIT     CODE           ?PR?_GPIO_INIT?SC95F8X1X_GPIO
+0008C8H   0009AAH   0000E3H   ---    ---      **GAP**
+LX51 LINKER/LOCATER V4.66.66.0                                                        08/14/2020  12:36:45  PAGE 3
+
+
+0009ABH   0009C4H   00001AH   BYTE   UNIT     CODE           ?C_C51STARTUP
+
+* * * * * * * * * * *  X D A T A   M E M O R Y  * * * * * * * * * * * * *
+001000H   00101DH   00001EH   BYTE   OFFS..   XDATA          ?XD?SC95F8X1X_DDIC?0
+
+* * * * * * * * *   R E M O V E D     S E G M E N T S   * * * * * * * *
+   *DEL*:           00000FH   BYTE   UNIT     CODE           ?PR?DDIC_DEINIT?SC95F8X1X_DDIC
+   *DEL*:           000004H   BYTE   UNIT     CODE           ?PR?DDIC_LEDCONFIG?SC95F8X1X_DDIC
+   *DEL*:           000024H   BYTE   UNIT     CODE           ?PR?_DDIC_CONTROL?SC95F8X1X_DDIC
+   *DEL*:           000026H   BYTE   UNIT     CODE           ?PR?GPIO_DEINIT?SC95F8X1X_GPIO
+   *DEL*:           00001FH   BYTE   UNIT     CODE           ?PR?_GPIO_WRITE?SC95F8X1X_GPIO
+   *DEL*:           000025H   BYTE   UNIT     CODE           ?PR?_GPIO_WRITEHIGH?SC95F8X1X_GPIO
+   *DEL*:           00002BH   BYTE   UNIT     CODE           ?PR?_GPIO_WRITELOW?SC95F8X1X_GPIO
+   *DEL*:           000021H   BYTE   UNIT     CODE           ?PR?_GPIO_READPORT?SC95F8X1X_GPIO
+   *DEL*:           00002DH   BYTE   UNIT     CODE           ?PR?_GPIO_READPIN?SC95F8X1X_GPIO
+   *DEL*:           00000EH   BYTE   UNIT     CODE           ?PR?_OPTION_WDT_CMD?SC95F8X1X_OPTION
+   *DEL*:           00001BH   BYTE   UNIT     CODE           ?PR?TIM2_DEINIT?SC95F8X1X_TIMER2
+   *DEL*:           00000DH   BYTE   UNIT     CODE           ?PR?_TIM2_WORKMODE0CONFIG?SC95F8X1X_TIMER2
+   *DEL*:           00000DH   BYTE   UNIT     CODE           ?PR?_TIM2_WORKMODE3CONFIG?SC95F8X1X_TIMER2
+   *DEL*:           000022H   BYTE   UNIT     CODE           ?PR?_TIM2_WORKMODECONFIG?SC95F8X1X_TIMER2
+   *DEL*:           00000CH   BYTE   UNIT     CODE           ?PR?_TIM2_SETEXEN2?SC95F8X1X_TIMER2
+   *DEL*:           000012H   BYTE   UNIT     CODE           ?PR?_TIM2_GETFLAGSTATUS?SC95F8X1X_TIMER2
+   *DEL*:           000008H   BYTE   UNIT     CODE           ?PR?_TIM2_CLEARFLAG?SC95F8X1X_TIMER2
+   *DEL*:           000001H   BYTE   UNIT     CODE           ?PR?SC_UART0_INIT?SC_INIT
+   *DEL*:           000001H   BYTE   UNIT     CODE           ?PR?SC_TIM0_INIT?SC_INIT
+   *DEL*:           000001H   BYTE   UNIT     CODE           ?PR?SC_TIM1_INIT?SC_INIT
+   *DEL*:           000001H   BYTE   UNIT     CODE           ?PR?SC_TIM3_INIT?SC_INIT
+   *DEL*:           000001H   BYTE   UNIT     CODE           ?PR?SC_TIM4_INIT?SC_INIT
+   *DEL*:           000001H   BYTE   UNIT     CODE           ?PR?SC_PWM_INIT?SC_INIT
+   *DEL*:           000001H   BYTE   UNIT     CODE           ?PR?SC_INT_INIT?SC_INIT
+   *DEL*:           000001H   BYTE   UNIT     CODE           ?PR?SC_ADC_INIT?SC_INIT
+   *DEL*:           000001H   BYTE   UNIT     CODE           ?PR?SC_IAP_INIT?SC_INIT
+   *DEL*:           000001H   BYTE   UNIT     CODE           ?PR?SC_USCI0_INIT?SC_INIT
+   *DEL*:           000001H   BYTE   UNIT     CODE           ?PR?SC_USCI1_INIT?SC_INIT
+   *DEL*:           000001H   BYTE   UNIT     CODE           ?PR?SC_USCI2_INIT?SC_INIT
+   *DEL*:           000001H   BYTE   UNIT     CODE           ?PR?SC_BTM_INIT?SC_INIT
+   *DEL*:           000001H   BYTE   UNIT     CODE           ?PR?SC_CRC_INIT?SC_INIT
+   *DEL*:           000001H   BYTE   UNIT     CODE           ?PR?SC_WDT_INIT?SC_INIT
+   *DEL*:           000001H   BYTE   UNIT     CODE           ?PR?SC_PWR_INIT?SC_INIT
+   *DEL*:           000001H   BYTE   UNIT     CODE           ?PR?SC_ACMP_INIT?SC_INIT
+   *DEL*:           000001H   BYTE   UNIT     CODE           ?PR?SC_MDU_INIT?SC_INIT
+
+
+
+OVERLAY MAP OF MODULE:   ..\OUTPUT\86BOX_TEMPERATURE (MAIN)
+
+
+FUNCTION/MODULE                                BIT_GROUP   DATA_GROUP 
+--> CALLED FUNCTION/MODULE                    START  STOP  START  STOP
+======================================================================
+INT0INTERRUPT/SC_IT                           ----- -----  ----- -----
+
+*** NEW ROOT ********************************
+
+TIMER0INTERRUPT/SC_IT                         ----- -----  ----- -----
+
+*** NEW ROOT ********************************
+
+INT1INTERRUPT/SC_IT                           ----- -----  ----- -----
+
+*** NEW ROOT ********************************
+
+TIMER1INTERRUPT/SC_IT                         ----- -----  ----- -----
+
+*** NEW ROOT ********************************
+LX51 LINKER/LOCATER V4.66.66.0                                                        08/14/2020  12:36:45  PAGE 4
+
+
+
+UART0INTERRUPT/SC_IT                          ----- -----  ----- -----
+
+*** NEW ROOT ********************************
+
+TIMER2INTERRUPT/SC_IT                         ----- -----  ----- -----
+
+*** NEW ROOT ********************************
+
+ADCINTERRUPT/SC_IT                            ----- -----  ----- -----
+
+*** NEW ROOT ********************************
+
+USCI0INTERRUPT/SC_IT                          ----- -----  ----- -----
+
+*** NEW ROOT ********************************
+
+PWMINTERRUPT/SC_IT                            ----- -----  ----- -----
+
+*** NEW ROOT ********************************
+
+BTMINTERRUPT/SC_IT                            ----- -----  ----- -----
+
+*** NEW ROOT ********************************
+
+INT2INTERRUPT/SC_IT                           ----- -----  ----- -----
+
+*** NEW ROOT ********************************
+
+ACMPINTERRUPT/SC_IT                           ----- -----  ----- -----
+
+*** NEW ROOT ********************************
+
+TIMER3INTERRUPT/SC_IT                         ----- -----  ----- -----
+
+*** NEW ROOT ********************************
+
+TIMER4INTERRUPT/SC_IT                         ----- -----  ----- -----
+
+*** NEW ROOT ********************************
+
+USCI1INTERRUPT/SC_IT                          ----- -----  ----- -----
+
+*** NEW ROOT ********************************
+
+USCI2INTERRUPT/SC_IT                          ----- -----  ----- -----
+
+*** NEW ROOT ********************************
+
+?C_C51STARTUP                                 ----- -----  ----- -----
+  +--> MAIN/MAIN
+
+MAIN/MAIN                                     ----- -----  ----- -----
+  +--> SC_INIT/SC_INIT
+
+SC_INIT/SC_INIT                               ----- -----  ----- -----
+  +--> SC_GPIO_INIT/SC_INIT
+  +--> SC_OPTION_INIT/SC_INIT
+  +--> SC_TIM2_INIT/SC_INIT
+  +--> SC_DDIC_INIT/SC_INIT
+
+SC_GPIO_INIT/SC_INIT                          ----- -----  ----- -----
+  +--> _GPIO_INIT/SC95F8X1X_GPIO
+
+_GPIO_INIT/SC95F8X1X_GPIO                     ----- -----  ----- -----
+LX51 LINKER/LOCATER V4.66.66.0                                                        08/14/2020  12:36:45  PAGE 5
+
+
+
+SC_OPTION_INIT/SC_INIT                        ----- -----  ----- -----
+  +--> _OPTION_SYSCLK_INIT/SC95F8X1X_OPTION
+  +--> _OPTION_XTIPLL_CMD/SC95F8X1X_OPTION
+  +--> _OPTION_ADC_VREFCONFIG/SC95F8X1X_OPTION
+  +--> _OPTION_RST_PIN_CMD/SC95F8X1X_OPTION
+  +--> _OPTION_LVR_INIT/SC95F8X1X_OPTION
+  +--> _OPTION_IAP_SETOPERATERANGE/SC95F8X1X_OPTION
+  +--> _OPTION_JTG_CMD/SC95F8X1X_OPTION
+
+_OPTION_SYSCLK_INIT/SC95F8X1X_OPTION          ----- -----  ----- -----
+
+_OPTION_XTIPLL_CMD/SC95F8X1X_OPTION           ----- -----  ----- -----
+
+_OPTION_ADC_VREFCONFIG/SC95F8X1X_OPTION       ----- -----  ----- -----
+
+_OPTION_RST_PIN_CMD/SC95F8X1X_OPTION          ----- -----  ----- -----
+
+_OPTION_LVR_INIT/SC95F8X1X_OPTION             ----- -----  ----- -----
+
+_OPTION_IAP_SETOPERATERANGE/SC95F8X1X_OP+     ----- -----  ----- -----
+... TION
+
+_OPTION_JTG_CMD/SC95F8X1X_OPTION              ----- -----  ----- -----
+
+SC_TIM2_INIT/SC_INIT                          ----- -----  ----- -----
+  +--> _TIM2_TIMEBASEINIT/SC95F8X1X_TIMER2
+  +--> _TIM2_PRESCALERSELECTION/SC95F8X1X_TIMER2
+  +--> _TIM2_WORKMODE1CONFIG/SC95F8X1X_TIMER2
+  +--> _TIM2_ITCONFIG/SC95F8X1X_TIMER2
+  +--> _TIM2_CMD/SC95F8X1X_TIMER2
+
+_TIM2_TIMEBASEINIT/SC95F8X1X_TIMER2           ----- -----  ----- -----
+
+_TIM2_PRESCALERSELECTION/SC95F8X1X_TIMER+     ----- -----  ----- -----
+... 2
+
+_TIM2_WORKMODE1CONFIG/SC95F8X1X_TIMER2        ----- -----  ----- -----
+
+_TIM2_ITCONFIG/SC95F8X1X_TIMER2               ----- -----  ----- -----
+
+_TIM2_CMD/SC95F8X1X_TIMER2                    ----- -----  ----- -----
+
+SC_DDIC_INIT/SC_INIT                          ----- -----  ----- -----
+  +--> _DDIC_DMOD_SELCET/SC95F8X1X_DDIC
+  +--> _DDIC_INIT/SC95F8X1X_DDIC
+  +--> _DDIC_LCDCONFIG/SC95F8X1X_DDIC
+  +--> _DDIC_OUTPUTPINOFDUTYCYCLED4/SC95F8X1X_DDIC
+  +--> _DDIC_CMD/SC95F8X1X_DDIC
+
+_DDIC_DMOD_SELCET/SC95F8X1X_DDIC              ----- -----  ----- -----
+
+_DDIC_INIT/SC95F8X1X_DDIC                     ----- -----  0008H 000CH
+
+_DDIC_LCDCONFIG/SC95F8X1X_DDIC                ----- -----  ----- -----
+
+_DDIC_OUTPUTPINOFDUTYCYCLED4/SC95F8X1X_D+     ----- -----  ----- -----
+... DIC
+
+_DDIC_CMD/SC95F8X1X_DDIC                      ----- -----  ----- -----
+
+
+
+PUBLIC SYMBOLS OF MODULE:  ..\OUTPUT\86BOX_TEMPERATURE (MAIN)
+
+LX51 LINKER/LOCATER V4.66.66.0                                                        08/14/2020  12:36:45  PAGE 6
+
+
+
+      VALUE       CLASS    TYPE      PUBLIC SYMBOL NAME
+      =================================================
+      00000008H   DATA     BYTE      ?_DDIC_Init?BYTE
+      00000000H   NUMBER   ---       ?C?CODESEG
+      00000000H   NUMBER   ---       ?C?XDATASEG
+      010002CAH   CODE     ---       ?C_START
+      01000000H   CODE     ---       ?C_STARTUP
+      01000296H   CODE     ---       _DDIC_Cmd
+*DEL*:00000000H   CODE     ---       _DDIC_Control
+      01000280H   CODE     ---       _DDIC_DMOD_Selcet
+      010001F8H   CODE     ---       _DDIC_Init
+      0100021BH   CODE     ---       _DDIC_LCDConfig
+      0100028BH   CODE     ---       _DDIC_OutputPinOfDutycycleD4
+      01000800H   CODE     ---       _GPIO_Init
+*DEL*:00000000H   CODE     ---       _GPIO_ReadPin
+*DEL*:00000000H   CODE     ---       _GPIO_ReadPort
+*DEL*:00000000H   CODE     ---       _GPIO_Write
+*DEL*:00000000H   CODE     ---       _GPIO_WriteHigh
+*DEL*:00000000H   CODE     ---       _GPIO_WriteLow
+      010001C7H   CODE     ---       _OPTION_ADC_VrefConfig
+      010002B7H   CODE     ---       _OPTION_IAP_SetOperateRange
+      01000266H   CODE     ---       _OPTION_JTG_Cmd
+      010002ACH   CODE     ---       _OPTION_LVR_Init
+      01000258H   CODE     ---       _OPTION_RST_PIN_Cmd
+      010002A1H   CODE     ---       _OPTION_SYSCLK_Init
+*DEL*:00000000H   CODE     ---       _OPTION_WDT_Cmd
+      0100024AH   CODE     ---       _OPTION_XTIPLL_Cmd
+*DEL*:00000000H   CODE     ---       _TIM2_ClearFlag
+      01000274H   CODE     ---       _TIM2_Cmd
+*DEL*:00000000H   CODE     ---       _TIM2_GetFlagStatus
+      010001E3H   CODE     ---       _TIM2_ITConfig
+      0100020AH   CODE     ---       _TIM2_PrescalerSelection
+*DEL*:00000000H   CODE     ---       _TIM2_SetEXEN2
+      01000189H   CODE     ---       _TIM2_TimeBaseInit
+*DEL*:00000000H   CODE     ---       _TIM2_WorkMode0Config
+      0100022BH   CODE     ---       _TIM2_WorkMode1Config
+*DEL*:00000000H   CODE     ---       _TIM2_WorkMode3Config
+*DEL*:00000000H   CODE     ---       _TIM2_WorkModeConfig
+      010002D6H   CODE     ---       ACMPInterrupt
+      010002D1H   CODE     ---       ADCInterrupt
+      010002D4H   CODE     ---       BTMInterrupt
+*DEL*:00000000H   CODE     ---       DDIC_DeInit
+*DEL*:00000000H   CODE     ---       DDIC_LEDConfig
+*DEL*:00000000H   CODE     ---       GPIO_DeInit
+      010002C2H   CODE     ---       INT0Interrupt
+      010002C6H   CODE     ---       INT1Interrupt
+      010002D5H   CODE     ---       INT2Interrupt
+      02001000H   XDATA    ---       LCDRAM
+      010002CAH   CODE     ---       main
+      010002D3H   CODE     ---       PWMInterrupt
+*DEL*:00000000H   CODE     ---       SC_ACMP_Init
+*DEL*:00000000H   CODE     ---       SC_ADC_Init
+*DEL*:00000000H   CODE     ---       SC_BTM_Init
+*DEL*:00000000H   CODE     ---       SC_CRC_Init
+      0100013FH   CODE     ---       SC_DDIC_Init
+      01000100H   CODE     ---       SC_GPIO_Init
+*DEL*:00000000H   CODE     ---       SC_IAP_Init
+      0100023BH   CODE     ---       SC_Init
+*DEL*:00000000H   CODE     ---       SC_INT_Init
+*DEL*:00000000H   CODE     ---       SC_MDU_Init
+      01000166H   CODE     ---       SC_OPTION_Init
+*DEL*:00000000H   CODE     ---       SC_PWM_Init
+*DEL*:00000000H   CODE     ---       SC_PWR_Init
+*DEL*:00000000H   CODE     ---       SC_TIM0_Init
+LX51 LINKER/LOCATER V4.66.66.0                                                        08/14/2020  12:36:45  PAGE 7
+
+
+*DEL*:00000000H   CODE     ---       SC_TIM1_Init
+      010001A8H   CODE     ---       SC_TIM2_Init
+*DEL*:00000000H   CODE     ---       SC_TIM3_Init
+*DEL*:00000000H   CODE     ---       SC_TIM4_Init
+*DEL*:00000000H   CODE     ---       SC_UART0_Init
+*DEL*:00000000H   CODE     ---       SC_USCI0_Init
+*DEL*:00000000H   CODE     ---       SC_USCI1_Init
+*DEL*:00000000H   CODE     ---       SC_USCI2_Init
+*DEL*:00000000H   CODE     ---       SC_WDT_Init
+*DEL*:00000000H   CODE     ---       TIM2_DeInit
+      010002CDH   CODE     ---       Timer0Interrupt
+      010002CEH   CODE     ---       Timer1Interrupt
+      010002D0H   CODE     ---       Timer2Interrupt
+      010002D7H   CODE     ---       Timer3Interrupt
+      010002D8H   CODE     ---       Timer4Interrupt
+      010002CFH   CODE     ---       UART0Interrupt
+      010002D2H   CODE     ---       USCI0Interrupt
+      010002D9H   CODE     ---       USCI1Interrupt
+      010002DAH   CODE     ---       USCI2Interrupt
+
+
+
+SYMBOL TABLE OF MODULE:  ..\OUTPUT\86BOX_TEMPERATURE (MAIN)
+
+      VALUE       REP       CLASS    TYPE      SYMBOL NAME
+      ====================================================
+      ---         MODULE    ---      ---       MAIN
+      010002CAH   PUBLIC    CODE     ---       main
+
+      010002CAH   BLOCK     CODE     ---       LVL=0
+      ---         BLOCKEND  ---      ---       LVL=0
+
+      ---         MODULE    ---      ---       SC95F8X1X_DDIC
+      02001000H   PUBLIC    XDATA    ---       LCDRAM
+      01000296H   PUBLIC    CODE     ---       _DDIC_Cmd
+      0100028BH   PUBLIC    CODE     ---       _DDIC_OutputPinOfDutycycleD4
+      01000280H   PUBLIC    CODE     ---       _DDIC_DMOD_Selcet
+      0100021BH   PUBLIC    CODE     ---       _DDIC_LCDConfig
+      00000008H   PUBLIC    DATA     BYTE      ?_DDIC_Init?BYTE
+      010001F8H   PUBLIC    CODE     ---       _DDIC_Init
+
+      010001F8H   BLOCK     CODE     ---       LVL=0
+      ---         BLOCKEND  ---      ---       LVL=0
+
+      0100021BH   BLOCK     CODE     ---       LVL=0
+      ---         BLOCKEND  ---      ---       LVL=0
+
+      01000280H   BLOCK     CODE     ---       LVL=0
+      ---         BLOCKEND  ---      ---       LVL=0
+
+      0100028BH   BLOCK     CODE     ---       LVL=0
+      ---         BLOCKEND  ---      ---       LVL=0
+
+      01000296H   BLOCK     CODE     ---       LVL=0
+      ---         BLOCKEND  ---      ---       LVL=0
+
+      ---         MODULE    ---      ---       SC95F8X1X_GPIO
+      01000800H   PUBLIC    CODE     ---       _GPIO_Init
+
+      01000800H   BLOCK     CODE     ---       LVL=0
+      ---         BLOCKEND  ---      ---       LVL=0
+
+      ---         MODULE    ---      ---       SC95F8X1X_OPTION
+      01000266H   PUBLIC    CODE     ---       _OPTION_JTG_Cmd
+      010002B7H   PUBLIC    CODE     ---       _OPTION_IAP_SetOperateRange
+LX51 LINKER/LOCATER V4.66.66.0                                                        08/14/2020  12:36:45  PAGE 8
+
+
+      010001C7H   PUBLIC    CODE     ---       _OPTION_ADC_VrefConfig
+      010002ACH   PUBLIC    CODE     ---       _OPTION_LVR_Init
+      01000258H   PUBLIC    CODE     ---       _OPTION_RST_PIN_Cmd
+      010002A1H   PUBLIC    CODE     ---       _OPTION_SYSCLK_Init
+      0100024AH   PUBLIC    CODE     ---       _OPTION_XTIPLL_Cmd
+
+      0100024AH   BLOCK     CODE     ---       LVL=0
+      ---         BLOCKEND  ---      ---       LVL=0
+
+      010002A1H   BLOCK     CODE     ---       LVL=0
+      ---         BLOCKEND  ---      ---       LVL=0
+
+      01000258H   BLOCK     CODE     ---       LVL=0
+      ---         BLOCKEND  ---      ---       LVL=0
+
+      010002ACH   BLOCK     CODE     ---       LVL=0
+      ---         BLOCKEND  ---      ---       LVL=0
+
+      010001C7H   BLOCK     CODE     ---       LVL=0
+      ---         BLOCKEND  ---      ---       LVL=0
+
+      010002B7H   BLOCK     CODE     ---       LVL=0
+      ---         BLOCKEND  ---      ---       LVL=0
+
+      01000266H   BLOCK     CODE     ---       LVL=0
+      ---         BLOCKEND  ---      ---       LVL=0
+
+      ---         MODULE    ---      ---       SC95F8X1X_TIMER2
+      010001E3H   PUBLIC    CODE     ---       _TIM2_ITConfig
+      01000274H   PUBLIC    CODE     ---       _TIM2_Cmd
+      0100022BH   PUBLIC    CODE     ---       _TIM2_WorkMode1Config
+      01000189H   PUBLIC    CODE     ---       _TIM2_TimeBaseInit
+      0100020AH   PUBLIC    CODE     ---       _TIM2_PrescalerSelection
+
+      0100020AH   BLOCK     CODE     ---       LVL=0
+      ---         BLOCKEND  ---      ---       LVL=0
+
+      01000189H   BLOCK     CODE     ---       LVL=0
+      ---         BLOCKEND  ---      ---       LVL=0
+
+      0100022BH   BLOCK     CODE     ---       LVL=0
+      ---         BLOCKEND  ---      ---       LVL=0
+
+      01000274H   BLOCK     CODE     ---       LVL=0
+      ---         BLOCKEND  ---      ---       LVL=0
+
+      010001E3H   BLOCK     CODE     ---       LVL=0
+      ---         BLOCKEND  ---      ---       LVL=0
+      00000006H   SYMBOL    DATA     VOID      status
+
+      ---         MODULE    ---      ---       SC_INIT
+      0100013FH   PUBLIC    CODE     ---       SC_DDIC_Init
+      010001A8H   PUBLIC    CODE     ---       SC_TIM2_Init
+      01000100H   PUBLIC    CODE     ---       SC_GPIO_Init
+      01000166H   PUBLIC    CODE     ---       SC_OPTION_Init
+      0100023BH   PUBLIC    CODE     ---       SC_Init
+
+      0100023BH   BLOCK     CODE     ---       LVL=0
+      ---         BLOCKEND  ---      ---       LVL=0
+
+      01000166H   BLOCK     CODE     ---       LVL=0
+      ---         BLOCKEND  ---      ---       LVL=0
+
+      01000100H   BLOCK     CODE     ---       LVL=0
+      ---         BLOCKEND  ---      ---       LVL=0
+LX51 LINKER/LOCATER V4.66.66.0                                                        08/14/2020  12:36:45  PAGE 9
+
+
+
+      010001A8H   BLOCK     CODE     ---       LVL=0
+      ---         BLOCKEND  ---      ---       LVL=0
+
+      0100013FH   BLOCK     CODE     ---       LVL=0
+      ---         BLOCKEND  ---      ---       LVL=0
+
+      ---         MODULE    ---      ---       SC_IT
+      010002DAH   PUBLIC    CODE     ---       USCI2Interrupt
+      010002D9H   PUBLIC    CODE     ---       USCI1Interrupt
+      010002D8H   PUBLIC    CODE     ---       Timer4Interrupt
+      010002D7H   PUBLIC    CODE     ---       Timer3Interrupt
+      010002D6H   PUBLIC    CODE     ---       ACMPInterrupt
+      010002D5H   PUBLIC    CODE     ---       INT2Interrupt
+      010002D4H   PUBLIC    CODE     ---       BTMInterrupt
+      010002D3H   PUBLIC    CODE     ---       PWMInterrupt
+      010002D2H   PUBLIC    CODE     ---       USCI0Interrupt
+      010002D1H   PUBLIC    CODE     ---       ADCInterrupt
+      010002D0H   PUBLIC    CODE     ---       Timer2Interrupt
+      010002CFH   PUBLIC    CODE     ---       UART0Interrupt
+      010002CEH   PUBLIC    CODE     ---       Timer1Interrupt
+      010002C6H   PUBLIC    CODE     ---       INT1Interrupt
+      010002CDH   PUBLIC    CODE     ---       Timer0Interrupt
+      010002C2H   PUBLIC    CODE     ---       INT0Interrupt
+
+      010002C2H   BLOCK     CODE     ---       LVL=0
+      ---         BLOCKEND  ---      ---       LVL=0
+
+      010002CDH   BLOCK     CODE     ---       LVL=0
+      ---         BLOCKEND  ---      ---       LVL=0
+
+      010002C6H   BLOCK     CODE     ---       LVL=0
+      ---         BLOCKEND  ---      ---       LVL=0
+
+      010002CEH   BLOCK     CODE     ---       LVL=0
+      ---         BLOCKEND  ---      ---       LVL=0
+
+      010002CFH   BLOCK     CODE     ---       LVL=0
+      ---         BLOCKEND  ---      ---       LVL=0
+
+      010002D0H   BLOCK     CODE     ---       LVL=0
+      ---         BLOCKEND  ---      ---       LVL=0
+
+      010002D1H   BLOCK     CODE     ---       LVL=0
+      ---         BLOCKEND  ---      ---       LVL=0
+
+      010002D2H   BLOCK     CODE     ---       LVL=0
+      ---         BLOCKEND  ---      ---       LVL=0
+
+      010002D3H   BLOCK     CODE     ---       LVL=0
+      ---         BLOCKEND  ---      ---       LVL=0
+
+      010002D4H   BLOCK     CODE     ---       LVL=0
+      ---         BLOCKEND  ---      ---       LVL=0
+
+      010002D5H   BLOCK     CODE     ---       LVL=0
+      ---         BLOCKEND  ---      ---       LVL=0
+
+      010002D6H   BLOCK     CODE     ---       LVL=0
+      ---         BLOCKEND  ---      ---       LVL=0
+
+      010002D7H   BLOCK     CODE     ---       LVL=0
+      ---         BLOCKEND  ---      ---       LVL=0
+
+      010002D8H   BLOCK     CODE     ---       LVL=0
+LX51 LINKER/LOCATER V4.66.66.0                                                        08/14/2020  12:36:45  PAGE 10
+
+
+      ---         BLOCKEND  ---      ---       LVL=0
+
+      010002D9H   BLOCK     CODE     ---       LVL=0
+      ---         BLOCKEND  ---      ---       LVL=0
+
+      010002DAH   BLOCK     CODE     ---       LVL=0
+      ---         BLOCKEND  ---      ---       LVL=0
+
+      ---         MODULE    ---      ---       ?C_STARTUP
+      01000000H   PUBLIC    CODE     ---       ?C_STARTUP
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 04A7H BYTE (58%) *
+******************************************************************************
+
+Program Size: data=14.0 xdata=30 const=0 code=752
+LX51 RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
